@@ -12,11 +12,11 @@ import kotlin.reflect.KType
  * @since indev
  */
 internal class ControllerHandlerParameter(val kParameter: KParameter) {
-    val name: String = kParameter.name ?: error("Parameter is required to have name")
     val kType: KType = kParameter.type
     val type: ParameterType = ParameterTypeResolver(kParameter).resolve()
+    val name: String = ParameterNameResolver(kParameter, type).resolve()
 
     override fun toString(): String {
-        return "name: $kType"
+        return "$name: $kType"
     }
 }

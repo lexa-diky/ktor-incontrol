@@ -1,8 +1,5 @@
 package com.skosc.incontrol.annotation
 
-import com.skosc.incontrol.controller.Controller
-import kotlin.reflect.KParameter
-
 /**
  * Marks handler method parameter as [ParameterType.Query]
  *
@@ -11,4 +8,12 @@ import kotlin.reflect.KParameter
  */
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class Query
+annotation class Query(val name: String = DEFAULT_NAME_RESOLVE) {
+
+    companion object {
+
+        internal const val DEFAULT_NAME_RESOLVE = "__RESOLVE_DEFAULT"
+    }
+}
+
+val Query.isResolveDefault: Boolean get() = name == Query.DEFAULT_NAME_RESOLVE
