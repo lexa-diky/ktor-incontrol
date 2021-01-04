@@ -3,7 +3,9 @@ package com.skosc.incontrol.routing
 import com.skosc.incontrol.controller.Controller
 import com.skosc.incontrol.controller.DelegatedController
 import io.ktor.application.*
+import io.ktor.http.*
 import io.ktor.routing.*
+import io.ktor.util.pipeline.*
 
 /**
  * DSL methods for integrating with default Routing module
@@ -12,29 +14,31 @@ import io.ktor.routing.*
  * @since indev
  */
 
-fun Route.get(controller: Controller) = get(controller.route) {
-    DelegatedController(controller).handle(call)
-}
+@ContextDsl
+fun Route.get(controller: Controller): Route = handle(controller, HttpMethod.Get)
 
-fun Route.post(controller: Controller) = post(controller.route) {
-    DelegatedController(controller).handle(call)
-}
-fun Route.delete(controller: Controller) = delete(controller.route) {
-    DelegatedController(controller).handle(call)
-}
+@ContextDsl
+fun Route.post(controller: Controller): Route = handle(controller, HttpMethod.Post)
 
-fun Route.head(controller: Controller) = head(controller.route) {
-    DelegatedController(controller).handle(call)
-}
+@ContextDsl
+fun Route.delete(controller: Controller): Route = handle(controller, HttpMethod.Delete)
 
-fun Route.put(controller: Controller) = put(controller.route) {
-    DelegatedController(controller).handle(call)
-}
+@ContextDsl
+fun Route.head(controller: Controller): Route = handle(controller, HttpMethod.Head)
 
-fun Route.options(controller: Controller) = options(controller.route) {
-    DelegatedController(controller).handle(call)
-}
+@ContextDsl
+fun Route.put(controller: Controller): Route = handle(controller, HttpMethod.Put)
 
-fun Route.patch(controller: Controller) = patch(controller.route) {
-    DelegatedController(controller).handle(call)
+@ContextDsl
+fun Route.options(controller: Controller): Route = handle(controller, HttpMethod.Options)
+
+@ContextDsl
+fun Route.patch(controller: Controller): Route = handle(controller, HttpMethod.Patch)
+
+@ContextDsl
+private fun Route.handle(controller: Controller, method: HttpMethod): Route {
+    val delegate = DelegatedController(controller)
+    return route(controller.route, method) {
+        handle { delegate.handle(call) }
+    }
 }

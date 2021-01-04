@@ -26,9 +26,3 @@ class InControl(val application: Application) {
         }
     }
 }
-
-fun main() {
-    embeddedServer(Netty) {
-        install(InControl)
-    }
-}

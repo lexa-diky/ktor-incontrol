@@ -35,7 +35,7 @@ internal class ParameterValidator {
 
     private fun validatePathOrQuery(parameter: ControllerHandlerParameter) = when {
         parameter.kType !in validPathAndQueryParameterTypes ->
-            throw IllegalArgumentException("Unsupported parameter type: ${parameter.type}")
+            throw IllegalArgumentException("Unsupported parameter type: ${parameter.kType}")
         else -> Unit
     }
 }

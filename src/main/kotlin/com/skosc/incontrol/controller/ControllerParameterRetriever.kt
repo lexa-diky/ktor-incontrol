@@ -22,9 +22,9 @@ internal class ControllerParameterRetriever {
             when(parameter.type) {
                 ParameterType.BODY -> call.receive(parameter.kType)
                 ParameterType.QUERY -> call.request.queryParameters[parameter.name]
-                    ?: error("Optional parameters not supported yet, parameter: $parameter")
+                    ?: error("Can't find required parameter: $parameter")
                 ParameterType.PATH -> call.parameters[parameter.name]
-                    ?: error("Optional parameters not supported yet, parameter: $parameter")
+                    ?: error("Can't find required parameter: $parameter")
             }
         }
     }
