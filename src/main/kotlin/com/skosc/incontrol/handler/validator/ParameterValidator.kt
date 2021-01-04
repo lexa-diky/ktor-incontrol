@@ -28,12 +28,20 @@ internal class ParameterValidator {
      * Validates [parameter], throws [IllegalArgumentException] if it is invalid
      */
     fun validateOrThrow(parameter: ControllerHandlerParameter) = when (parameter.type) {
-        ParameterType.BODY -> Unit
+        ParameterType.BODY -> validateBody(parameter)
         ParameterType.QUERY,
         ParameterType.PATH -> validatePathOrQuery(parameter)
     }
 
+    private fun validateBody(parameter: ControllerHandlerParameter) = when {
+        parameter.kType.isMarkedNullable ->
+            throw IllegalArgumentException("Optional parameters not supported")
+        else -> Unit
+    }
+
     private fun validatePathOrQuery(parameter: ControllerHandlerParameter) = when {
+        parameter.kType.isMarkedNullable ->
+            throw IllegalArgumentException("Optional parameters not supported")
         parameter.kType !in validPathAndQueryParameterTypes ->
             throw IllegalArgumentException("Unsupported parameter type: ${parameter.kType}")
         else -> Unit
