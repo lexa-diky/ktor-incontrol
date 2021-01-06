@@ -11,11 +11,15 @@ import java.lang.IllegalArgumentException
 
 private suspend fun freeHandlerMethod(@Body body: String) = 2
 
-internal class ControllerHandlerMethodTest {
+internal class ControllerHandlerMethodFactoryTest {
+
+    val controllerHandlerMethodFactory = ControllerHandlerMethodFactory(
+        ControllerHandlerParameterFactory()
+    )
 
     @Test
     fun `resolves all parameters`() {
-        val handler = ControllerHandlerMethod(SampleController::sample)
+        val handler = controllerHandlerMethodFactory.from(SampleController::sample)
         assertEquals(2, handler.parameters.size)
         assertEquals(SampleController::sample, handler.kFunction)
     }
@@ -23,13 +27,13 @@ internal class ControllerHandlerMethodTest {
     @Test
     fun `can't use free method`() {
         assertThrows<IllegalArgumentException> {
-            val handler = ControllerHandlerMethod(::freeHandlerMethod)
+            val handler = controllerHandlerMethodFactory.from(::freeHandlerMethod)
         }
     }
 
     @Test
     fun `can invoke handler`(): Unit = runBlocking {
-        val handler = ControllerHandlerMethod(SampleController::sample)
+        val handler = controllerHandlerMethodFactory.from(SampleController::sample)
         val (body, user) = handler.parameters
         val callResult = handler.call(SampleController(), mapOf(
             body to "body",

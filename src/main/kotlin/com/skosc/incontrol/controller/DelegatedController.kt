@@ -4,6 +4,8 @@ import com.skosc.incontrol.InControl
 import com.skosc.incontrol.di.DIContainerWrapperAggregate
 import com.skosc.incontrol.di.DefaultAnonymousDITypeContainer
 import com.skosc.incontrol.reflect.ControllerHandlerMethod
+import com.skosc.incontrol.reflect.ControllerHandlerMethodFactory
+import com.skosc.incontrol.reflect.ControllerHandlerParameterFactory
 import com.skosc.incontrol.reflect.HandlerMethodFinder
 import io.ktor.application.*
 import io.ktor.response.*
@@ -17,9 +19,12 @@ import io.ktor.response.*
  */
 internal class DelegatedController(private val controller: Controller) {
 
+    private val controllerHandlerMethodFactory: ControllerHandlerMethodFactory =
+        ControllerHandlerMethodFactory(ControllerHandlerParameterFactory())
     private val handlerMethodFinder: HandlerMethodFinder = HandlerMethodFinder()
     private val parameterRetriever: ControllerParameterRetriever = ControllerParameterRetriever()
-    private val delegatedHandler: ControllerHandlerMethod = ControllerHandlerMethod(handlerMethodFinder.findHandlerMethod(controller))
+    private val delegatedHandler: ControllerHandlerMethod =
+        controllerHandlerMethodFactory.from(handlerMethodFinder.findHandlerMethod(controller))
 
     suspend fun handle(call: ApplicationCall) {
         val diContainer = DIContainerWrapperAggregate(listOf(

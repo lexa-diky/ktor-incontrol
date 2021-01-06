@@ -14,18 +14,18 @@ import kotlin.reflect.full.findAnnotation
  * @author a.yakovlev
  * @since indev
  */
-internal class ParameterNameResolver(private val parameter: KParameter, private val type: ParameterType) {
+internal class ParameterNameResolver {
 
-   fun resolve(): String {
+   fun resolve(parameter: KParameter, type: ParameterType): String {
        return when(type) {
            ParameterType.BODY -> requireNotNull(parameter.name)
-           ParameterType.PATH -> resolveForPath()
-           ParameterType.QUERY -> resolveForQuery()
-           ParameterType.DEPENDENCY -> resolveForDependency()
+           ParameterType.PATH -> resolveForPath(parameter)
+           ParameterType.QUERY -> resolveForQuery(parameter)
+           ParameterType.DEPENDENCY -> resolveForDependency(parameter)
        }
    }
 
-    private fun resolveForPath(): String {
+    private fun resolveForPath(parameter: KParameter): String {
         val annotation = parameter.findAnnotation<Path>()
         if (annotation?.isResolveDefault != false) {
             return requireNotNull(parameter.name)
@@ -33,7 +33,7 @@ internal class ParameterNameResolver(private val parameter: KParameter, private 
         return annotation.name
     }
 
-    private fun resolveForQuery(): String {
+    private fun resolveForQuery(parameter: KParameter): String {
         val annotation = parameter.findAnnotation<Query>()
         if (annotation?.isResolveDefault != false) {
             return requireNotNull(parameter.name)
@@ -41,11 +41,16 @@ internal class ParameterNameResolver(private val parameter: KParameter, private 
         return annotation.name
     }
 
-    private fun resolveForDependency(): String {
+    private fun resolveForDependency(parameter: KParameter): String {
         val annotation = parameter.findAnnotation<Dependency>()
         if (annotation?.isResolveDefault != false) {
             return requireNotNull(parameter.name)
         }
         return annotation.name
+    }
+
+    companion object {
+
+        val DEFAULT: ParameterNameResolver = ParameterNameResolver()
     }
 }

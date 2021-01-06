@@ -11,10 +11,12 @@ import kotlin.reflect.KType
  * @author a.yakovlev
  * @since indev
  */
-internal class ControllerHandlerParameter(val kParameter: KParameter) {
+internal data class ControllerHandlerParameter(
+    val kParameter: KParameter,
+    val type: ParameterType,
+    val name: String
+) {
     val kType: KType = kParameter.type
-    val type: ParameterType = ParameterTypeResolver.DEFAULT.resolve(kParameter)
-    val name: String = ParameterNameResolver(kParameter, type).resolve()
 
     override fun toString(): String {
         return "$name: $kType"

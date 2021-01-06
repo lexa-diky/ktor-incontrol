@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import kotlin.reflect.full.declaredMemberFunctions
 
-internal class ControllerHandlerParameterTest {
+internal class ControllerHandlerParameterFactoryTest {
 
     @Test
     fun `resolves all fields`() {
         val method = SampleController::class.declaredMemberFunctions.first { it.name == "sample" }
         val parameter = method.parameters.first { it.name == "body" }
-        val handlerParameter = ControllerHandlerParameter(parameter)
+        val handlerParameter = ControllerHandlerParameterFactory().from(parameter)
         assertEquals("body", handlerParameter.name)
         assertEquals(parameter.type, handlerParameter.kType)
         assertEquals(parameter, handlerParameter.kParameter)

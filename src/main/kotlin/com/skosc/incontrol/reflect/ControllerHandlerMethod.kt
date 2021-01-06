@@ -16,9 +16,10 @@ import kotlin.reflect.jvm.isAccessible
  * @author a.yakovlev
  * @since indev
  */
-internal class ControllerHandlerMethod(val kFunction: KFunction<*>) {
-
-    val parameters: List<ControllerHandlerParameter> = kFunction.valueParameters.map(::ControllerHandlerParameter)
+internal class ControllerHandlerMethod(
+    val kFunction: KFunction<*>,
+    val parameters: List<ControllerHandlerParameter>,
+) {
     val instanceParameter: KParameter = kFunction.instanceParameter
         ?: throw IllegalArgumentException("ControllerHandler is required to be member of class")
 
