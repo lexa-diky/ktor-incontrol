@@ -1,5 +1,5 @@
-name: Run Test On Every PR
-on: pull_request
+name: Run Test On Every Push
+on: push
 jobs:
   gradle:
     strategy:
