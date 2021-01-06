@@ -8,7 +8,4 @@ internal class DIContainerWrapperAggregate(private val subContainers: List<DICon
         subContainers.asSequence()
             .map { it.resolve(tag, type) }
             .firstOrNull { it != null }
-
-    fun with(vararg newSubContainers: DIContainerWrapper, closure: (DIContainerWrapper) -> Unit) =
-        closure(DIContainerWrapperAggregate(subContainers + newSubContainers))
 }

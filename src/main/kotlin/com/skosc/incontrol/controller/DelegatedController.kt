@@ -1,5 +1,7 @@
 package com.skosc.incontrol.controller
 
+import com.skosc.incontrol.InControl
+import com.skosc.incontrol.di.DIContainerWrapperAggregate
 import com.skosc.incontrol.di.DefaultAnonymousDITypeContainer
 import com.skosc.incontrol.reflect.ControllerHandlerMethod
 import com.skosc.incontrol.reflect.HandlerMethodFinder
@@ -20,7 +22,10 @@ internal class DelegatedController(private val controller: Controller) {
     private val delegatedHandler: ControllerHandlerMethod = ControllerHandlerMethod(handlerMethodFinder.findHandlerMethod(controller))
 
     suspend fun handle(call: ApplicationCall) {
-        val diContainer = DefaultAnonymousDITypeContainer.fromCall(call)
+        val diContainer = DIContainerWrapperAggregate(listOf(
+                DefaultAnonymousDITypeContainer.fromCall(call),
+                call.application.feature(InControl).diContainer
+        ))
         val parameters = parameterRetriever.retrieveParameters(
             expectedParameters = delegatedHandler.parameters,
             diContainerWrapper = diContainer,
