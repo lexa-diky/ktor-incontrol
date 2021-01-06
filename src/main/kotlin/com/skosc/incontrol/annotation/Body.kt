@@ -1,8 +1,5 @@
 package com.skosc.incontrol.annotation
 
-import com.skosc.incontrol.controller.Controller
-import kotlin.reflect.KParameter
-
 /**
  * Marks handler method parameter as [ParameterType.Body]
  *

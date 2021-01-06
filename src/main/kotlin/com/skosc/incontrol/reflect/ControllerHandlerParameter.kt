@@ -13,7 +13,7 @@ import kotlin.reflect.KType
  */
 internal class ControllerHandlerParameter(val kParameter: KParameter) {
     val kType: KType = kParameter.type
-    val type: ParameterType = ParameterTypeResolver(kParameter).resolve()
+    val type: ParameterType = ParameterTypeResolver.DEFAULT.resolve(kParameter)
     val name: String = ParameterNameResolver(kParameter, type).resolve()
 
     override fun toString(): String {

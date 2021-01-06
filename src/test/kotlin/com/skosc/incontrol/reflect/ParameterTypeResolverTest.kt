@@ -13,25 +13,25 @@ internal class ParameterTypeResolverTest {
     @Test
     fun `resolves body type by name`() {
         val bodyParameter = TestingSample::handlerOfBody.findParameterByName("body")!!
-        assertEquals(ParameterType.BODY, ParameterTypeResolver(bodyParameter).resolve())
+        assertEquals(ParameterType.BODY, ParameterTypeResolver().resolve(bodyParameter))
     }
 
     @Test
     fun `resolves body type by annotation`() {
         val bodyParameter = TestingSample::handlerOfBodyWithAnnotation.findParameterByName("param")!!
-        assertEquals(ParameterType.BODY, ParameterTypeResolver(bodyParameter).resolve())
+        assertEquals(ParameterType.BODY, ParameterTypeResolver().resolve(bodyParameter))
     }
 
     @Test
     fun `resolves path type by annotation`() {
         val bodyParameter = TestingSample::handlerOfPath.findParameterByName("path")!!
-        assertEquals(ParameterType.PATH, ParameterTypeResolver(bodyParameter).resolve())
+        assertEquals(ParameterType.PATH, ParameterTypeResolver().resolve(bodyParameter))
     }
 
     @Test
     fun `resolves query type by annotation`() {
         val bodyParameter = TestingSample::handlerOfQuery.findParameterByName("query")!!
-        assertEquals(ParameterType.QUERY, ParameterTypeResolver(bodyParameter).resolve())
+        assertEquals(ParameterType.QUERY, ParameterTypeResolver().resolve(bodyParameter))
     }
 
     internal class TestingSample {

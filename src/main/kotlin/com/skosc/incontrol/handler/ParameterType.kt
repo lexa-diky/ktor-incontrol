@@ -22,5 +22,10 @@ internal enum class ParameterType {
     /**
      * Query parameter in request url, for example https://domain.com?parameter=value
      */
-    QUERY
+    QUERY,
+
+    /**
+     * Parameter containing some system parameter not directly passed network
+     */
+    DEPENDENCY
 }
