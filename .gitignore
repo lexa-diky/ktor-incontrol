@@ -73,7 +73,7 @@ gradle-app.setting
 .gradletasknamecache
 .idea/
 build/
-gradle/
+gradle/wrapper/gradle-wrapper.jar
 cmake-build-*/
 .idea/**/mongoSettings.xml
 *.iws
