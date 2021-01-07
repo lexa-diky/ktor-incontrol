@@ -24,7 +24,7 @@ internal class ControllerHandlerMethod(
 ) {
     val instanceParameter: KParameter = kFunction.instanceParameter ?: throwMemberClassException()
 
-    suspend fun call(instance: Controller, parameters: Map<ControllerHandlerParameter, Any>): Any? {
+    suspend fun call(instance: Controller, parameters: Map<ControllerHandlerParameter, Any?>): Any? {
         return kFunction
             .also { it.isAccessible = true }
             .callSuspendBy(parameters.mapKeys { it.key.kParameter } + (instanceParameter to instance))

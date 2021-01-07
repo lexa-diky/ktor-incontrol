@@ -15,23 +15,36 @@ import io.ktor.util.*
  * @author a.yakovlev
  * @since indev
  */
-internal class ControllerParameterRetriever() {
+internal class ControllerParameterRetriever {
+
+    private val optionalParameterValueMarker = object {}
 
     suspend fun retrieveParameters(
         expectedParameters: List<ControllerHandlerParameter>,
         diContainerWrapper: DIContainerWrapper,
         call: ApplicationCall
-    ): Map<ControllerHandlerParameter, Any> {
+    ): Map<ControllerHandlerParameter, Any?> {
         return expectedParameters.associateWith { parameter ->
-            when (parameter.type) {
-                ParameterType.BODY -> call.receive(parameter.kType)
-                ParameterType.QUERY -> call.request.queryParameters[parameter.name]
-                    ?: throwCantFindParameter(parameter)
-                ParameterType.PATH -> call.parameters[parameter.name]
-                    ?: throwCantFindParameter(parameter)
-                ParameterType.DEPENDENCY -> diContainerWrapper.resolve(parameter.name, parameter.kType)
+            when {
+                parameter.type == ParameterType.BODY ->
+                    call.receive(parameter.kType)
+                parameter.type == ParameterType.QUERY ->
+                    normalize(parameter, call.request.queryParameters[parameter.name])
+                parameter.type == ParameterType.PATH ->
+                    normalize(parameter, call.parameters[parameter.name])
+                parameter.type == ParameterType.DEPENDENCY -> diContainerWrapper.resolve(parameter.name, parameter.kType)
                     ?: throwCantFindDependency(parameter, diContainerWrapper)
+                else -> throwCantFindParameter(parameter)
             }
+        }.filter { (_, v) -> v != optionalParameterValueMarker }
+    }
+
+    private fun normalize(parameter: ControllerHandlerParameter, value: Any?): Any? {
+        return when {
+            value != null -> value
+            parameter.isOptional -> optionalParameterValueMarker
+            parameter.isNullable -> null
+            else -> throwCantFindParameter(parameter)
         }
     }
 

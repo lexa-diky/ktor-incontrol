@@ -27,10 +27,10 @@ internal class ParameterTypeResolver {
     )
 
     private val pathAndQueryTypes: List<KType> = listOf(
-        String::class.createType(),
-        Int::class.createType(),
-        Double::class.createType(),
-        Boolean::class.createType()
+        String::class.createType(nullable = true),
+        Int::class.createType(nullable = true),
+        Double::class.createType(nullable = true),
+        Boolean::class.createType(nullable = true)
     )
 
     fun resolve(parameter: KParameter): ParameterType = when {

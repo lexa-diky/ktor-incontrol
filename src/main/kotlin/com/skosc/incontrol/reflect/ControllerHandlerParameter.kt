@@ -18,6 +18,10 @@ internal data class ControllerHandlerParameter(
 ) {
     val kType: KType = kParameter.type
 
+    val isOptional: Boolean = kParameter.isOptional
+
+    val isNullable: Boolean = kType.isMarkedNullable
+
     override fun toString(): String {
         return "$name: $kType"
     }
