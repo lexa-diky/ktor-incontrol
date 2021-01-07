@@ -60,7 +60,7 @@ suspend fun handler(@Dependency myService: MyService) = myService.loadData()
 ✔️Optional Values Support  
 ✔️MVC Controllers  
 ✔️Extensive @Dependency Annotation Support  
-❌   Full Support For Non String Parameters  
+✔️Full Support For Non String Parameters  
 ❌   Stable Architecture  
 ❌   High Performance    
 ❌   Readable Error Coverage    
