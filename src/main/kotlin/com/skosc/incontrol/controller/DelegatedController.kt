@@ -22,16 +22,14 @@ internal class DelegatedController(private val controller: Controller) {
     private val controllerHandlerMethodFactory: ControllerHandlerMethodFactory =
         ControllerHandlerMethodFactory(ControllerHandlerParameterFactory())
     private val handlerMethodFinder: HandlerMethodFinder = HandlerMethodFinder()
-    private val parameterRetriever: ControllerParameterRetriever = ControllerParameterRetriever()
     private val delegatedHandler: ControllerHandlerMethod =
         controllerHandlerMethodFactory.from(handlerMethodFinder.findHandlerMethod(controller))
 
     suspend fun handle(call: ApplicationCall) {
-        val diContainer = DIContainerWrapperAggregate(listOf(
-                DefaultAnonymousDITypeContainer.fromCall(call),
-                call.application.feature(InControl).diContainer
-        ))
-        val parameters = parameterRetriever.retrieveParameters(
+        val feature = call.application.feature(InControl)
+
+        val diContainer = buildLocalDiContainer(feature, call)
+        val parameters = feature.parameterRetriever.retrieveParameters(
             expectedParameters = delegatedHandler.parameters,
             diContainerWrapper = diContainer,
             call = call
@@ -41,4 +39,8 @@ internal class DelegatedController(private val controller: Controller) {
             callResult?.let { call.respond(it) }
         }
     }
+
+    private fun buildLocalDiContainer(feature: InControl, call: ApplicationCall) = DIContainerWrapperAggregate(
+        listOf(DefaultAnonymousDITypeContainer.fromCall(call), feature.diContainer)
+    )
 }
