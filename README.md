@@ -25,6 +25,20 @@ routing {
 ```
 That's all, you are ready to go
 
+## Advanced Features
+### DI container integration
+You can inject any object into handler method.
+To do this, implement DIContainerWrapper interface and set it in your installation.
+```kotlin
+install(InControl) {
+    diContainer = MyContainer()
+}
+```
+After that you can add @Dependency parameter to handler method, like so:
+```kotlin
+suspend fun handler(@Dependency myService: MyService) = myService.loadData() 
+```
+
 ## Contribute
 ### KDock header format
 ```kotlin
