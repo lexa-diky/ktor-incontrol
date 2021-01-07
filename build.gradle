@@ -1,7 +1,8 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.4.21'
+    id 'maven'
+    id 'maven-publish'
 }
-apply plugin: 'maven'
 
 group = 'com.skosc'
 version = 'indev'
