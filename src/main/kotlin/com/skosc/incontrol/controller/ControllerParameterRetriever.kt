@@ -21,6 +21,11 @@ internal class ControllerParameterRetriever {
 
     private val optionalParameterValueMarker = object {}
 
+    /**
+     * Retrieves values for all passed [expectedParameters].
+     * If parameter is optional it might be omitted.
+     * If parameter is nullable if might be automatically set to null.
+     */
     suspend fun retrieveParameters(
         expectedParameters: List<ControllerHandlerParameter>,
         diContainerWrapper: DIContainerWrapper,

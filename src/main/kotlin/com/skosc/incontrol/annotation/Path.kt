@@ -1,7 +1,7 @@
 package com.skosc.incontrol.annotation
 
 /**
- * Marks handler method parameter as [ParameterType.Path]
+ * Marks handler method parameter as [ParameterType.PATH]
  *
  * @author a.yakovlev
  * @since indev
@@ -16,4 +16,7 @@ annotation class Path(val name: String = DEFAULT_NAME_RESOLVE) {
     }
 }
 
+/**
+ * Checks if name of parameter set to default
+ */
 val Path.isResolveDefault: Boolean get() = name == Path.DEFAULT_NAME_RESOLVE

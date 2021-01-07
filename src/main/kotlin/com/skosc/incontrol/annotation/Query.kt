@@ -1,7 +1,7 @@
 package com.skosc.incontrol.annotation
 
 /**
- * Marks handler method parameter as [ParameterType.Query]
+ * Marks handler method parameter as [ParameterType.QUERY]
  *
  * @author a.yakovlev
  * @since indev
@@ -16,4 +16,7 @@ annotation class Query(val name: String = DEFAULT_NAME_RESOLVE) {
     }
 }
 
+/**
+ * Checks if name of parameter set to default
+ */
 val Query.isResolveDefault: Boolean get() = name == Query.DEFAULT_NAME_RESOLVE

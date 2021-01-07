@@ -8,6 +8,9 @@ package com.skosc.incontrol.controller
  */
 interface Controller {
 
+    /**
+     * Route that will be used for this controller. Will work properly with vanilla Routing module
+     */
     val route: String get() = DEFAULT_ROUTE
 
     companion object {

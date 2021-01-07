@@ -1,7 +1,7 @@
 package com.skosc.incontrol.annotation
 
 /**
- * Marks handler method parameter as [ParameterType.Body]
+ * Marks handler method parameter as [ParameterType.BODY]
  *
  * @author a.yakovlev
  * @since indev

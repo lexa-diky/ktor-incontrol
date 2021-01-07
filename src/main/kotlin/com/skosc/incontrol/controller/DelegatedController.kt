@@ -25,6 +25,9 @@ internal class DelegatedController(private val controller: Controller) {
     private val delegatedHandler: ControllerHandlerMethod =
         controllerHandlerMethodFactory.from(handlerMethodFinder.findHandlerMethod(controller))
 
+    /**
+     * Handles passed [call] with wrapped controller
+     */
     suspend fun handle(call: ApplicationCall) {
         val feature = call.application.feature(InControl)
 
