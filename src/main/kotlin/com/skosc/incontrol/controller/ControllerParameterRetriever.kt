@@ -5,9 +5,11 @@ import com.skosc.incontrol.exeption.InControlErrorCode
 import com.skosc.incontrol.exeption.inControlError
 import com.skosc.incontrol.handler.ParameterType
 import com.skosc.incontrol.reflect.ControllerHandlerParameter
+import com.skosc.incontrol.reflect.StaticTypes
 import io.ktor.application.*
 import io.ktor.request.*
-import io.ktor.util.*
+import java.lang.Exception
+import kotlin.reflect.full.isSubtypeOf
 
 /**
  * Retrieves parameters for controller from [ApplicationCall]
@@ -29,9 +31,9 @@ internal class ControllerParameterRetriever {
                 parameter.type == ParameterType.BODY ->
                     call.receive(parameter.kType)
                 parameter.type == ParameterType.QUERY ->
-                    normalize(parameter, call.request.queryParameters[parameter.name])
+                    normalizeQueryOrPath(parameter, call.request.queryParameters[parameter.name])
                 parameter.type == ParameterType.PATH ->
-                    normalize(parameter, call.parameters[parameter.name])
+                    normalizeQueryOrPath(parameter, call.parameters[parameter.name])
                 parameter.type == ParameterType.DEPENDENCY -> diContainerWrapper.resolve(parameter.name, parameter.kType)
                     ?: throwCantFindDependency(parameter, diContainerWrapper)
                 else -> throwCantFindParameter(parameter)
@@ -39,12 +41,35 @@ internal class ControllerParameterRetriever {
         }.filter { (_, v) -> v != optionalParameterValueMarker }
     }
 
-    private fun normalize(parameter: ControllerHandlerParameter, value: Any?): Any? {
+    private fun normalizeQueryOrPath(parameter: ControllerHandlerParameter, value: String?): Any? {
         return when {
-            value != null -> value
+            value != null -> castQueryOrPathToNearestType(parameter, value)
             parameter.isOptional -> optionalParameterValueMarker
             parameter.isNullable -> null
             else -> throwCantFindParameter(parameter)
+        }
+    }
+
+    private fun castQueryOrPathToNearestType(parameter: ControllerHandlerParameter, value: String): Any {
+        try {
+            return when {
+                parameter.kType.isSubtypeOf(StaticTypes.STRING) -> value
+                parameter.kType.isSubtypeOf(StaticTypes.INT) -> value.toInt()
+                parameter.kType.isSubtypeOf(StaticTypes.DOUBLE) -> value.toDouble()
+                parameter.kType.isSubtypeOf(StaticTypes.BOOLEAN) -> value.toBoolean()
+                else -> inControlError(
+                    code = InControlErrorCode.OTHER_INTEGRITY,
+                    reason = "Integrity error",
+                    howToSolve = "Please make Github issue"
+                )
+            }
+        } catch (e: Exception) {
+            inControlError(
+                cause = e,
+                code = InControlErrorCode.HANDLER_PARAMETER_CAST,
+                reason = "Can't cast handler parameter $parameter",
+                howToSolve = "Please check type annotations"
+            )
         }
     }
 
