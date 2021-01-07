@@ -1,5 +1,8 @@
 # INCONTROL - Spring MVC style controllers for Ktor framework
-[![](https://jitpack.io/v/SkoSC/ktor-incontrol.svg)](https://jitpack.io/#SkoSC/ktor-incontrol)
+[![Version](https://img.shields.io/badge/version-indev-green)]()
+[![JitPack](https://jitpack.io/v/SkoSC/ktor-incontrol.svg)](https://jitpack.io/#SkoSC/ktor-incontrol)
+[![Kotlin](https://img.shields.io/badge/kotlin-1.4.10-blue.svg?logo=kotlin)](http://kotlinlang.org)
+[![GitHub License](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
 
 ## Advantages over default routing
 1. You can easily use dependency injection
