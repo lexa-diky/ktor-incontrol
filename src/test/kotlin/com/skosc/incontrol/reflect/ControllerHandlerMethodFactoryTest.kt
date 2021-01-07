@@ -3,6 +3,8 @@ package com.skosc.incontrol.reflect
 import com.skosc.incontrol.annotation.Body
 import com.skosc.incontrol.annotation.Path
 import com.skosc.incontrol.controller.Controller
+import com.skosc.incontrol.exeption.InControlErrorCode
+import com.skosc.incontrol.exeption.InControlException
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -26,9 +28,10 @@ internal class ControllerHandlerMethodFactoryTest {
 
     @Test
     fun `can't use free method`() {
-        assertThrows<IllegalArgumentException> {
-            val handler = controllerHandlerMethodFactory.from(::freeHandlerMethod)
+        val exception = assertThrows<InControlException> {
+            controllerHandlerMethodFactory.from(::freeHandlerMethod)
         }
+        assertEquals(InControlErrorCode.HANDLER_NOT_IN_CLASS_INSTANCE, exception.errorCode)
     }
 
     @Test

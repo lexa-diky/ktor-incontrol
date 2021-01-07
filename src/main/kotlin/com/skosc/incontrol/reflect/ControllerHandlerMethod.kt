@@ -1,6 +1,8 @@
 package com.skosc.incontrol.reflect
 
 import com.skosc.incontrol.controller.Controller
+import com.skosc.incontrol.exeption.InControlErrorCode
+import com.skosc.incontrol.exeption.inControlError
 import java.lang.IllegalArgumentException
 import kotlin.reflect.KFunction
 import kotlin.reflect.KParameter
@@ -20,12 +22,17 @@ internal class ControllerHandlerMethod(
     val kFunction: KFunction<*>,
     val parameters: List<ControllerHandlerParameter>,
 ) {
-    val instanceParameter: KParameter = kFunction.instanceParameter
-        ?: throw IllegalArgumentException("ControllerHandler is required to be member of class")
+    val instanceParameter: KParameter = kFunction.instanceParameter ?: throwMemberClassException()
 
     suspend fun call(instance: Controller, parameters: Map<ControllerHandlerParameter, Any>): Any? {
         return kFunction
             .also { it.isAccessible = true }
             .callSuspendBy(parameters.mapKeys { it.key.kParameter } + (instanceParameter to instance))
     }
+
+    private fun throwMemberClassException(): Nothing = inControlError(
+        code = InControlErrorCode.HANDLER_NOT_IN_CLASS_INSTANCE,
+        reason = "ControllerHandler is required to be member of class",
+        howToSolve = "Move handler method into class implementing Controller interface or use vanilla router handler instead"
+    )
 }

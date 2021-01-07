@@ -1,6 +1,8 @@
 package com.skosc.incontrol.controller
 
 import com.skosc.incontrol.di.DIContainerWrapper
+import com.skosc.incontrol.exeption.InControlErrorCode
+import com.skosc.incontrol.exeption.inControlError
 import com.skosc.incontrol.handler.ParameterType
 import com.skosc.incontrol.reflect.ControllerHandlerParameter
 import io.ktor.application.*
@@ -21,15 +23,28 @@ internal class ControllerParameterRetriever() {
         call: ApplicationCall
     ): Map<ControllerHandlerParameter, Any> {
         return expectedParameters.associateWith { parameter ->
-            when(parameter.type) {
+            when (parameter.type) {
                 ParameterType.BODY -> call.receive(parameter.kType)
                 ParameterType.QUERY -> call.request.queryParameters[parameter.name]
-                    ?: error("Can't find required parameter: $parameter")
+                    ?: throwCantFindParameter(parameter)
                 ParameterType.PATH -> call.parameters[parameter.name]
-                    ?: error("Can't find required parameter: $parameter")
+                    ?: throwCantFindParameter(parameter)
                 ParameterType.DEPENDENCY -> diContainerWrapper.resolve(parameter.name, parameter.kType)
-                    ?: error("Can't resolve dependency from container: $diContainerWrapper")
+                    ?: throwCantFindDependency(parameter, diContainerWrapper)
             }
         }
     }
+
+    private fun throwCantFindParameter(parameter: ControllerHandlerParameter): Nothing = inControlError(
+        code = InControlErrorCode.PARAMETER_CANT_FIND_PARAMETER,
+        reason = "Can't find required parameter: $parameter",
+        howToSolve = "Either pass parameter in request or mark it as nullable in handler"
+    )
+
+    private fun throwCantFindDependency(parameter: ControllerHandlerParameter, container: DIContainerWrapper): Nothing =
+        inControlError(
+            code = InControlErrorCode.PARAMETER_CANT_FIND_PARAMETER,
+            reason = "Can't find dependency: $parameter in container: $container",
+            howToSolve = "Declare required dependency in your container"
+        )
 }
