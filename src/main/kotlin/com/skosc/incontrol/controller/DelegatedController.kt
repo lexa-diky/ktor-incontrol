@@ -37,6 +37,8 @@ internal class DelegatedController(private val controller: Controller) {
             call = call
         )
         val callResult = delegatedHandler.call(controller, parameters)
-        callResult?.let { call.respond(it) }
+        if (callResult != Unit) {
+            callResult?.let { call.respond(it) }
+        }
     }
 }
