@@ -1,9 +1,11 @@
 package com.skosc.incontrol.routing
 
 import com.skosc.incontrol.InControl
+import com.skosc.incontrol.annotation.Dependency
 import com.skosc.incontrol.controller.Controller
 import io.ktor.application.*
 import io.ktor.http.*
+import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.server.testing.*
 import org.junit.jupiter.api.Assertions.*
@@ -76,6 +78,20 @@ internal class RoutingKtTest {
         withTestRoute({ patch(testController("patch")) }) {
             val call = handleRequest(HttpMethod.Patch, "/")
             assertEquals("patch", call.response.content)
+        }
+    }
+
+    @Test
+    fun controllerReturningUnit() {
+        withTestRoute({
+            get(object : Controller {
+                suspend fun handler(@Dependency call: ApplicationCall): Unit {
+                    call.respond("UnitValue")
+                }
+            })
+        }) {
+            val call = handleRequest(HttpMethod.Get, "/")
+            assertEquals("UnitValue", call.response.content)
         }
     }
 }

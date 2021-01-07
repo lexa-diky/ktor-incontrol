@@ -1,6 +1,6 @@
 package com.skosc.incontrol.annotation
 
-annotation class Dependency(val name: String) {
+annotation class Dependency(val name: String = DEFAULT_NAME_RESOLVE) {
 
     companion object {
 
