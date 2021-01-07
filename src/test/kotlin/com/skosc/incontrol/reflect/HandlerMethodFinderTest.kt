@@ -1,6 +1,8 @@
 package com.skosc.incontrol.reflect
 
 import com.skosc.incontrol.controller.Controller
+import com.skosc.incontrol.exeption.InControlErrorCode
+import com.skosc.incontrol.exeption.InControlException
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -19,23 +21,28 @@ internal class HandlerMethodFinderTest {
 
     @Test
     fun `failing controller with no handlers`() {
-        assertThrows<IllegalArgumentException> {
+        val exception = assertThrows<InControlException> {
             finder.findHandlerMethod(FailControllerWithNoHandlers())
         }
+
+        assertEquals(InControlErrorCode.HANDLER_NOT_FOUND, exception.errorCode)
     }
 
     @Test
     fun `failing controller with more then one handler`() {
-        assertThrows<IllegalArgumentException> {
+        val exception = assertThrows<InControlException> {
             finder.findHandlerMethod(FailControllerWithTooManyHandlers())
         }
+
+        assertEquals(InControlErrorCode.HANDLER_TOO_MANY_MATCHING, exception.errorCode)
     }
 
     @Test
     fun `handler method should be marked as suspend`() {
-        assertThrows<IllegalArgumentException> {
+        val exception = assertThrows<InControlException> {
             finder.findHandlerMethod(FailControllerWithPublicMethodWithoutSuspend())
         }
+        assertEquals(InControlErrorCode.HANDLER_NOT_FOUND, exception.errorCode)
     }
 
     internal class OkController : Controller {
