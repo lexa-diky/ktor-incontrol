@@ -9,7 +9,7 @@
 2. Simpler code without using complicated extensions
 3. Cleaner object-oriented code style
 
-## HowTo
+## Getting Started
 Define your controller
 ```kotlin
 class MyController : Controller {
@@ -28,6 +28,17 @@ routing {
 ```
 That's all, you are ready to go
 
+## Handler Functions
+### Parameters
+There are 4 types of handler parameters supported at he monent
+1. Path - parameters are marked with @Path annotation
+2. Query - parameters are marked with @Path annotations
+3. Body - parameter is either named 'body' or marked with @Body
+4. Dependency (non request parameters) - parameters marked with @Dependency
+
+Body and Dependency parameters can be any non-nullable and non-optional type, while
+Path and Query can be nullable and/or nullable but support only Int, Double, Boolean and String parameters.
+
 ## Advanced Features
 ### DI container integration
 You can inject any object into handler method.
@@ -41,6 +52,20 @@ After that you can add @Dependency parameter to handler method, like so:
 ```kotlin
 suspend fun handler(@Dependency myService: MyService) = myService.loadData() 
 ```
+
+## Roadmap To 1.0
+✔️MVC Controllers  
+✔️Routing Integration  
+✔️Dependency Injection Support  
+✔️Optional Values Support  
+✔️MVC Controllers  
+✔️Extensive @Dependency Annotation Support  
+❌   Full Support For Non String Parameters  
+❌   Stable Architecture  
+❌   High Performance    
+❌   Readable Error Coverage    
+❌   Test Coverage  
+❌   Documentation  
 
 ## Contribute
 ### KDock header format
