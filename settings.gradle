@@ -1,1 +1,1 @@
-include ':ktor-incontrol'
+include ':ktor-incontrol', ':ktor-incontrol-kodein', ':ktor-incontrol-sample'

@@ -7,17 +7,16 @@ version = 'indev'
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.21"
-
+    implementation project(":ktor-incontrol")
+    implementation project(":ktor-incontrol-kodein")
     implementation "io.ktor:ktor-server-core:1.4.0"
-
-    testImplementation "io.ktor:ktor-server-test-host:1.4.0"
-    testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.0'
+    implementation "io.ktor:ktor-server-netty:1.4.0"
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
+    implementation 'org.kodein.di:kodein-di:7.2.0'
 }
 
 test {
