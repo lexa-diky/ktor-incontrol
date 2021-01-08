@@ -36,7 +36,7 @@ fun Route.options(controller: Controller): Route = handle(controller, HttpMethod
 fun Route.patch(controller: Controller): Route = handle(controller, HttpMethod.Patch)
 
 @ContextDsl
-private fun Route.handle(controller: Controller, method: HttpMethod): Route {
+fun Route.handle(controller: Controller, method: HttpMethod): Route {
     val delegate = DelegatedController(controller)
     return route(controller.route, method) {
         handle { delegate.handle(call) }

@@ -30,6 +30,7 @@ internal class DelegatedController(private val controller: Controller) {
      */
     suspend fun handle(call: ApplicationCall) {
         val feature = call.application.feature(InControl)
+        feature.ensureInitialized()
 
         val diContainer = buildLocalDiContainer(feature, call)
         val parameters = feature.parameterRetriever.retrieveParameters(

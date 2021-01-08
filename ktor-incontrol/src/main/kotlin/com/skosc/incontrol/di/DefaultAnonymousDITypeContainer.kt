@@ -10,7 +10,7 @@ internal class DefaultAnonymousDITypeContainer(
 ) : DIContainerWrapper {
 
     override fun resolve(tag: String?, type: KType): Any? =
-        dependencies.firstOrNull { (type, _) -> type.isSupertypeOf(type) }?.second
+        dependencies.firstOrNull { (filterType, _) -> filterType.isSupertypeOf(type) }?.second
 
     companion object {
 

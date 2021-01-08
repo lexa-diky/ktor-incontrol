@@ -4,9 +4,8 @@ import com.skosc.incontrol.controller.ControllerParameterRetriever
 import com.skosc.incontrol.di.DIContainerWrapper
 import io.ktor.application.*
 import io.ktor.routing.*
-import io.ktor.server.engine.*
-import io.ktor.server.netty.*
 import io.ktor.util.*
+import java.util.*
 
 /**
  * Settings class of InControl module
@@ -21,7 +20,29 @@ class InControl(val application: Application) {
      */
     var diContainer: DIContainerWrapper = DIContainerWrapper.empty()
 
+    /**
+     * Modules that will be applied to feature, when [ensureInitialized] will be called first time
+     */
+    private val modules: MutableList<InControlModule> = LinkedList()
+
+    private var isInitialized: Boolean = false
+
     internal val parameterRetriever: ControllerParameterRetriever = ControllerParameterRetriever()
+
+    /**
+     * Adds module with lazy initialization
+     */
+    fun registerModule(module: InControlModule) {
+        modules.add(module)
+    }
+
+    fun ensureInitialized() {
+        if (!isInitialized) {
+            modules.forEach { it.apply(this) }
+            modules.clear()
+            isInitialized = true
+        }
+    }
 
     /**
      * Feature for enabling [Controller] usage
