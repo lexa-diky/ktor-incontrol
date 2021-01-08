@@ -39,7 +39,6 @@ hs_err_pid*
 **/build/
 !src/**/build/
 gradle-app.setting
-!gradle-wrapper.jar
 .gradletasknamecache
 *.class
 *.log
@@ -73,7 +72,6 @@ gradle-app.setting
 .gradletasknamecache
 .idea/
 build/
-gradle/wrapper/gradle-wrapper.jar
 cmake-build-*/
 .idea/**/mongoSettings.xml
 *.iws
