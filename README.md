@@ -57,11 +57,13 @@ suspend fun handler(@Dependency myService: MyService) = myService.loadData()
 ## Roadmap To 1.0
 ✔️MVC Controllers  
 ✔️Routing Integration  
+✔️Autowired Controllers Support  
 ✔️Dependency Injection Support  
 ✔️Optional Values Support  
 ✔️MVC Controllers  
 ✔️Extensive @Dependency Annotation Support  
 ✔️Full Support For Non String Parameters  
+✔️Out Of Box Integration With Kodein  
 ❌   Stable Architecture  
 ❌   High Performance    
 ❌   Readable Error Coverage    
@@ -70,6 +72,4 @@ suspend fun handler(@Dependency myService: MyService) = myService.loadData()
 
 ## Future
 🚀   Custom Parameter Adapters  
-🚀   Out Of Box Integration With Kodein And Koin  
 🚀   Ability To 'Hack' Library Internals  
-🚀   Autowired Controllers Support
