@@ -1,5 +1,6 @@
 package com.skosc.incontrol.controller
 
+import com.skosc.incontrol.annotation.Dependency
 import com.skosc.incontrol.di.DIContainerWrapper
 import com.skosc.incontrol.exeption.InControlErrorCode
 import com.skosc.incontrol.exeption.inControlError
@@ -29,21 +30,31 @@ internal class ControllerParameterRetriever {
     suspend fun retrieveParameters(
         expectedParameters: List<ControllerHandlerParameter>,
         diContainerWrapper: DIContainerWrapper,
-        call: ApplicationCall
+        call: ApplicationCall,
     ): Map<ControllerHandlerParameter, Any?> {
         return expectedParameters.associateWith { parameter ->
-            when {
-                parameter.type == ParameterType.BODY ->
+            when (parameter.type) {
+                ParameterType.BODY ->
                     call.receive(parameter.kType)
-                parameter.type == ParameterType.QUERY ->
+                ParameterType.QUERY ->
                     normalizeQueryOrPath(parameter, call.request.queryParameters[parameter.name])
-                parameter.type == ParameterType.PATH ->
+                ParameterType.PATH ->
                     normalizeQueryOrPath(parameter, call.parameters[parameter.name])
-                parameter.type == ParameterType.DEPENDENCY -> diContainerWrapper.resolve(parameter.name, parameter.kType)
-                    ?: throwCantFindDependency(parameter, diContainerWrapper)
+                ParameterType.DEPENDENCY ->
+                    tryResolveDependencyParameter(diContainerWrapper, parameter)
                 else -> throwCantFindParameter(parameter)
             }
         }.filter { (_, v) -> v != optionalParameterValueMarker }
+    }
+
+    private fun tryResolveDependencyParameter(
+        diContainerWrapper: DIContainerWrapper,
+        parameter: ControllerHandlerParameter,
+    ): Any {
+        // If parameter name in code matches resolved parameter name, then tag is not set
+        val tag = if (parameter.kParameter.name == parameter.name) null else parameter.name
+        return diContainerWrapper.resolve(tag, parameter.kType)
+            ?: throwCantFindDependency(parameter, diContainerWrapper)
     }
 
     private fun normalizeQueryOrPath(parameter: ControllerHandlerParameter, value: String?): Any? {

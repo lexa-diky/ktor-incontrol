@@ -6,15 +6,15 @@ package com.skosc.incontrol.annotation
  * @author a.yakovlev
  * @since indev
  */
-annotation class Dependency(val name: String = DEFAULT_NAME_RESOLVE) {
+annotation class Dependency(val tag: String = DEFAULT_TAG_RESOLVE) {
 
     companion object {
 
-        internal const val DEFAULT_NAME_RESOLVE = "__RESOLVE_DEFAULT"
+        internal const val DEFAULT_TAG_RESOLVE = "__RESOLVE_DEFAULT"
     }
 }
 
 /**
  * Checks if name of parameter set to default
  */
-val Dependency.isResolveDefault: Boolean get() = name == Dependency.DEFAULT_NAME_RESOLVE
+val Dependency.isResolveDefault: Boolean get() = tag == Dependency.DEFAULT_TAG_RESOLVE

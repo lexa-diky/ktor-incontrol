@@ -15,12 +15,12 @@ import org.kodein.di.jxinject.jxInjectorModule
 import org.kodein.di.ktor.di
 import javax.inject.Inject
 
-class ClassDependency @Inject constructor() {
-    fun retrieve(): String = "ClassDependency"
+class ClassDependency(private val idx: Int) {
+    fun retrieve(): String = "ClassDependency$idx"
 }
 
-class ParameterDependency @Inject constructor() {
-    fun retrieve(): String = "ParameterDependency"
+class ParameterDependency(private val idx: Int) {
+    fun retrieve(): String = "ParameterDependency$idx"
 }
 
 class MySampleKodeinController @Inject constructor(private val classDependency: ClassDependency) : Controller {
@@ -36,9 +36,9 @@ fun main() {
             enableKodeinIntegration()
         }
         di {
-            import( jxInjectorModule)
-            bind<ClassDependency>() with instance(ClassDependency())
-            bind<ParameterDependency>() with instance(ParameterDependency())
+            import(jxInjectorModule)
+            bind<ClassDependency>() with instance(ClassDependency(1))
+            bind<ParameterDependency>() with instance(ParameterDependency(2))
         }
 
         routing {

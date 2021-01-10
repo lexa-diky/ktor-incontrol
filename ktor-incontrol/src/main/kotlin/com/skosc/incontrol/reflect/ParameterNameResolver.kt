@@ -46,7 +46,7 @@ internal class ParameterNameResolver {
         if (annotation?.isResolveDefault != false) {
             return requireNotNull(parameter.name)
         }
-        return annotation.name
+        return annotation.tag
     }
 
     companion object {

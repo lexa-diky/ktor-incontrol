@@ -6,7 +6,8 @@ package com.skosc.incontrol.exeption
  * @author a.yakovlev
  * @since indev
  */
-internal fun inControlError(
+// TODO Move to common module
+fun inControlError(
     code: InControlErrorCode,
     reason: String,
     howToSolve: String,
