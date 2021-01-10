@@ -73,14 +73,3 @@ suspend fun handler(@Dependency myService: MyService) = myService.loadData()
 🚀   Out Of Box Integration With Kodein And Koin  
 🚀   Ability To 'Hack' Library Internals  
 🚀   Autowired Controllers Support
-
-## Contribute
-### KDock header format
-```kotlin
-/**
- * <Your description>
- *
- * @author <your name>
- * @since <current dev version>
- */
-```
