@@ -19,7 +19,7 @@ internal class ControllerHandlerMethod(
     val kFunction: KFunction<*>,
     val parameters: List<ControllerHandlerParameter>,
 ) {
-    val instanceParameter: KParameter = kFunction.instanceParameter ?: throwMemberClassException()
+    private val instanceParameter: KParameter = kFunction.instanceParameter ?: throwMemberClassException()
 
     suspend fun call(instance: Controller, parameters: Map<ControllerHandlerParameter, Any?>): Any? {
         return kFunction

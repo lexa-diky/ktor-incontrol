@@ -39,12 +39,22 @@ internal class ControllerParameterRetriever {
                 ParameterType.QUERY ->
                     normalizeQueryOrPath(parameter, call.request.queryParameters[parameter.name])
                 ParameterType.PATH ->
-                    normalizeQueryOrPath(parameter, call.parameters[parameter.name])
+                    normalizeQueryOrPath(parameter, extractPathParameter(call, parameter))
                 ParameterType.DEPENDENCY ->
                     tryResolveDependencyParameter(diContainerWrapper, parameter)
                 else -> throwCantFindParameter(parameter)
             }
         }.filter { (_, v) -> v != optionalParameterValueMarker }
+    }
+
+    private fun extractPathParameter(call: ApplicationCall, parameter: ControllerHandlerParameter): String? {
+        val parameters = call.parameters.getAll(parameter.name) ?: return null
+        return if (parameters.size == 1) {
+            parameters.first()
+        } else {
+            val callImposter = call.request.queryParameters[parameter.name]
+            parameters.firstOrNull { it != callImposter }
+        }
     }
 
     private fun tryResolveDependencyParameter(

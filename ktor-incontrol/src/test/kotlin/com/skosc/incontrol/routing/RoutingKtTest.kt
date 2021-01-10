@@ -2,6 +2,8 @@ package com.skosc.incontrol.routing
 
 import com.skosc.incontrol.InControl
 import com.skosc.incontrol.annotation.Dependency
+import com.skosc.incontrol.annotation.Path
+import com.skosc.incontrol.annotation.Query
 import com.skosc.incontrol.controller.Controller
 import io.ktor.application.*
 import io.ktor.http.*
@@ -82,7 +84,7 @@ internal class RoutingKtTest {
     }
 
     @Test
-    fun controllerReturningUnit() {
+    fun `controller returning unit`() {
         withTestRoute({
             get(object : Controller {
                 suspend fun handler(@Dependency call: ApplicationCall): Unit {
@@ -92,6 +94,25 @@ internal class RoutingKtTest {
         }) {
             val call = handleRequest(HttpMethod.Get, "/")
             assertEquals("UnitValue", call.response.content)
+        }
+    }
+
+    @Test
+    fun `controller can have path and query parameters with same name`() {
+        withTestRoute({
+            get(object : Controller {
+                override val route: String = "/{user}"
+
+                suspend fun handler(
+                    @Path("user") pathUser: String,
+                    @Query("user") queryUser: String,
+                ): String {
+                    return pathUser + queryUser
+                }
+            })
+        }) {
+            val call = handleRequest(HttpMethod.Get, "/alex?user=michail")
+            assertEquals("alexmichail", call.response.content)
         }
     }
 }
