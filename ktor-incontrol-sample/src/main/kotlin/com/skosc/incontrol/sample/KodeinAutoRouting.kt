@@ -5,6 +5,7 @@ import com.skosc.incontrol.controller.Controller
 import com.skosc.incontrol.kodein.autowire.AutoRouting
 import com.skosc.incontrol.kodein.autowire.autoRoute
 import com.skosc.incontrol.kodein.enableAutoRoutedControllers
+import com.skosc.incontrol.kodein.enableKodeinIntegration
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.routing.*
@@ -31,6 +32,7 @@ fun main() {
     embeddedServer(Netty, port = 8080) {
         install(Routing)
         install(InControl) {
+            enableKodeinIntegration()
             enableAutoRoutedControllers()
         }
 

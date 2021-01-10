@@ -11,6 +11,15 @@ import kotlin.reflect.KClass
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.isSubclassOf
 
+/**
+ * @author a.yakovlev
+ * @since indev
+ *
+ * Adds controllers marked with [AutoRouting] to routing schema
+ *
+ * @param pkg - your project root package to scan for [Controller]s
+ * @param group - filters witch [Controller]s will be placed into routing according to [AutoRouting.group] parameter
+ */
 @Suppress("UNCHECKED_CAST")
 fun Route.autoRoute(pkg: String, group: String = AutoRouting.DEFAULT_GROUP) {
     val reflections = Reflections(pkg)
