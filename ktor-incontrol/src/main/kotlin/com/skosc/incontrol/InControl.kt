@@ -36,7 +36,7 @@ class InControl(val application: Application) {
         modules.add(module)
     }
 
-    fun ensureInitialized() {
+    private fun ensureInitialized() {
         if (!isInitialized) {
             modules.forEach { it.apply(this) }
             modules.clear()
@@ -52,7 +52,9 @@ class InControl(val application: Application) {
         override val key: AttributeKey<InControl> = AttributeKey("InControl")
 
         override fun install(pipeline: Application, configure: InControl.() -> Unit): InControl {
-            return InControl(pipeline).apply(configure)
+            return InControl(pipeline).apply(configure).apply {
+                ensureInitialized()
+            }
         }
     }
 }

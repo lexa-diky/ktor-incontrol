@@ -14,6 +14,7 @@ dependencies {
     implementation project(":ktor-incontrol")
     implementation "io.ktor:ktor-server-core:1.4.0"
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.21"
+    implementation 'org.reflections:reflections:0.9.12'
     api 'org.kodein.di:kodein-di:7.1.0'
     api 'org.kodein.di:kodein-di-framework-ktor-server-jvm:7.1.0'
     api "org.kodein.di:kodein-di-jxinject-jvm:7.1.0"
