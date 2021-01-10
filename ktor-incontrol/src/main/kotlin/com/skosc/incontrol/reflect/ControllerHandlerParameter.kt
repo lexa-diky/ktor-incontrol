@@ -14,7 +14,7 @@ import kotlin.reflect.KType
 internal data class ControllerHandlerParameter(
     val kParameter: KParameter,
     val type: ParameterType,
-    val name: String
+    val name: String,
 ) {
     val kType: KType = kParameter.type
 

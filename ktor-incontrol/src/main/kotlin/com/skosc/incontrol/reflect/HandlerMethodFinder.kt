@@ -43,8 +43,8 @@ internal class HandlerMethodFinder {
 
     private fun throwTooManyHandlersError(
         instance: Controller,
-        matchingMethods: List<KFunction<*>>
-    ) : Nothing {
+        matchingMethods: List<KFunction<*>>,
+    ): Nothing {
         inControlError(
             code = InControlErrorCode.HANDLER_TOO_MANY_MATCHING,
             reason = "To many matching methods in controller: $instance, methods: $matchingMethods",

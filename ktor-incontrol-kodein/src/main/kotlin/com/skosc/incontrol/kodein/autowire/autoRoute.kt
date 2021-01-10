@@ -8,7 +8,6 @@ import io.ktor.http.*
 import io.ktor.routing.*
 import org.reflections.Reflections
 import kotlin.reflect.KClass
-import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.isSubclassOf
 
 /**

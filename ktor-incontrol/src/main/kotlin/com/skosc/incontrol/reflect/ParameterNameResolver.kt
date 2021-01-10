@@ -16,14 +16,14 @@ import kotlin.reflect.full.findAnnotation
  */
 internal class ParameterNameResolver {
 
-   fun resolve(parameter: KParameter, type: ParameterType): String {
-       return when(type) {
-           ParameterType.BODY -> requireNotNull(parameter.name)
-           ParameterType.PATH -> resolveForPath(parameter)
-           ParameterType.QUERY -> resolveForQuery(parameter)
-           ParameterType.DEPENDENCY -> resolveForDependency(parameter)
-       }
-   }
+    fun resolve(parameter: KParameter, type: ParameterType): String {
+        return when (type) {
+            ParameterType.BODY -> requireNotNull(parameter.name)
+            ParameterType.PATH -> resolveForPath(parameter)
+            ParameterType.QUERY -> resolveForQuery(parameter)
+            ParameterType.DEPENDENCY -> resolveForDependency(parameter)
+        }
+    }
 
     private fun resolveForPath(parameter: KParameter): String {
         val annotation = parameter.findAnnotation<Path>()

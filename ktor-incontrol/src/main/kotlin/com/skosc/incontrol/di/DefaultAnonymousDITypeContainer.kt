@@ -6,7 +6,7 @@ import kotlin.reflect.full.createType
 import kotlin.reflect.full.isSupertypeOf
 
 internal class DefaultAnonymousDITypeContainer(
-    private val dependencies: List<Pair<KType, Any>>
+    private val dependencies: List<Pair<KType, Any>>,
 ) : DIContainerWrapper {
 
     override fun resolve(tag: String?, type: KType): Any? =

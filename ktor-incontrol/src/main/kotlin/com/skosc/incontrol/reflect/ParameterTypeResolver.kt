@@ -41,7 +41,7 @@ internal class ParameterTypeResolver {
         else -> throwCantResolveTypeParameter(parameter)
     }
 
-    private fun checkIsBody(parameter: KParameter) : Boolean {
+    private fun checkIsBody(parameter: KParameter): Boolean {
         return parameter.name == NAME_BODY || parameter.hasAnnotation<Body>()
     }
 

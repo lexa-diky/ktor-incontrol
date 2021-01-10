@@ -1,6 +1,5 @@
 package com.skosc.incontrol.controller
 
-import com.skosc.incontrol.annotation.Dependency
 import com.skosc.incontrol.di.DIContainerWrapper
 import com.skosc.incontrol.exeption.InControlErrorCode
 import com.skosc.incontrol.exeption.inControlError
@@ -9,7 +8,6 @@ import com.skosc.incontrol.reflect.ControllerHandlerParameter
 import com.skosc.incontrol.reflect.StaticTypes
 import io.ktor.application.*
 import io.ktor.request.*
-import java.lang.Exception
 import kotlin.reflect.full.isSubtypeOf
 
 /**

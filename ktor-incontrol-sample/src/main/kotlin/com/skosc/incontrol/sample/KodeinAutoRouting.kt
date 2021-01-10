@@ -7,7 +7,6 @@ import com.skosc.incontrol.kodein.autowire.autoRoute
 import com.skosc.incontrol.kodein.enableAutoRoutedControllers
 import com.skosc.incontrol.kodein.enableKodeinIntegration
 import io.ktor.application.*
-import io.ktor.http.*
 import io.ktor.routing.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -18,7 +17,8 @@ import org.kodein.di.provider
 import javax.inject.Inject
 
 @AutoRouting("GET")
-class SampleAutoRoutingController @Inject constructor(private val dependency: SampleAutoRoutingControllerDependency): Controller {
+class SampleAutoRoutingController @Inject constructor(private val dependency: SampleAutoRoutingControllerDependency) :
+    Controller {
 
     suspend fun handle() = "Hello world: $dependency"
 }

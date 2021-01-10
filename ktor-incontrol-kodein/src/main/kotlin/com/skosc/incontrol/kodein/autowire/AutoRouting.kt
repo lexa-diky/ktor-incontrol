@@ -1,8 +1,5 @@
 package com.skosc.incontrol.kodein.autowire
 
-import com.skosc.incontrol.controller.Controller
-import io.ktor.http.*
-
 /**
  * @author a.yakovlev
  * @since indev

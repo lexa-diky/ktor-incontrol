@@ -4,7 +4,7 @@ import com.skosc.incontrol.annotation.Body
 import com.skosc.incontrol.annotation.Path
 import com.skosc.incontrol.annotation.Query
 import com.skosc.incontrol.handler.ParameterType
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import kotlin.reflect.full.findParameterByName
 

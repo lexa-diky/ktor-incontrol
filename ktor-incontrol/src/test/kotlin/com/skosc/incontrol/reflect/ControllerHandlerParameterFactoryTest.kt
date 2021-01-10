@@ -2,7 +2,7 @@ package com.skosc.incontrol.reflect
 
 import com.skosc.incontrol.annotation.Body
 import com.skosc.incontrol.handler.ParameterType
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import kotlin.reflect.full.declaredMemberFunctions
 

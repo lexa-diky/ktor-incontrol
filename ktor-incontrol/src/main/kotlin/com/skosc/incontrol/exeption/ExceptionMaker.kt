@@ -11,7 +11,7 @@ fun inControlError(
     code: InControlErrorCode,
     reason: String,
     howToSolve: String,
-    cause: Throwable? = null
+    cause: Throwable? = null,
 ): Nothing {
     throw InControlException(
         cause = cause,

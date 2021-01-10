@@ -3,7 +3,7 @@ package com.skosc.incontrol.reflect
 import com.skosc.incontrol.controller.Controller
 import com.skosc.incontrol.exeption.InControlErrorCode
 import com.skosc.incontrol.exeption.InControlException
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -60,7 +60,7 @@ internal class HandlerMethodFinderTest {
         private suspend fun handler() = 2
     }
 
-    internal class FailControllerWithTooManyHandlers: Controller {
+    internal class FailControllerWithTooManyHandlers : Controller {
 
         override val route: String = "/"
 
@@ -69,7 +69,7 @@ internal class HandlerMethodFinderTest {
         suspend fun handle3() = 3
     }
 
-    internal class FailControllerWithPublicMethodWithoutSuspend: Controller {
+    internal class FailControllerWithPublicMethodWithoutSuspend : Controller {
 
         override val route: String = "/"
 

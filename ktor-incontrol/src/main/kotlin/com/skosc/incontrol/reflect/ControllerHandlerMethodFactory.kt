@@ -4,7 +4,7 @@ import kotlin.reflect.KFunction
 import kotlin.reflect.full.valueParameters
 
 internal class ControllerHandlerMethodFactory(
-    private val controllerHandlerParameterFactory: ControllerHandlerParameterFactory
+    private val controllerHandlerParameterFactory: ControllerHandlerParameterFactory,
 ) {
 
     fun from(kFunction: KFunction<*>): ControllerHandlerMethod {
