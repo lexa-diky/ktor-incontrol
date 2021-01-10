@@ -8,26 +8,30 @@ import io.ktor.http.*
 import io.ktor.routing.*
 import org.reflections.Reflections
 import kotlin.reflect.KClass
+import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.isSubclassOf
 
 @Suppress("UNCHECKED_CAST")
 fun Route.autoRoute(pkg: String, group: String = AutoRouting.DEFAULT_GROUP) {
     val reflections = Reflections(pkg)
-    val types: List<KClass<*>> = reflections.getTypesAnnotatedWith(AutoRouting::class.java)
-        .map { it.kotlin }
+    // TODO Rewrite more efficiently
+    val types = reflections.getTypesAnnotatedWith(AutoRouting::class.java)
+        .filter { it.getDeclaredAnnotation(AutoRouting::class.java).group == group }
+        .map { it.getDeclaredAnnotation(AutoRouting::class.java).method to it.kotlin }
 
-    if (types.any { !it.isSubclassOf(Controller::class) }) {
+
+    if (types.any { (_, type) -> !type.isSubclassOf(Controller::class) }) {
         inControlError(
             code = InControlErrorCode.CONTROLLER_NOT_IMPLEMENTING,
             reason = "AutoRouted class not implementing Controller interface",
             howToSolve = "Add Controller interface to:\n" +
-                    types.filter { !it.isSubclassOf(Controller::class) }
+                    types.filter { (_, type) -> !type.isSubclassOf(Controller::class) }
                         .joinToString(separator = "\n")
 
         )
     } else {
-        (types as List<KClass<Controller>>).forEach { controller ->
-            handle(controller, HttpMethod.Get)
+        (types as List<Pair<String, KClass<Controller>>>).forEach { (method, type) ->
+            handle(type, HttpMethod(method))
         }
     }
 }
