@@ -1,4 +1,4 @@
-# INCONTROL - Spring MVC style controllers for Ktor framework
+# INCONTROL - MVC style controllers for Ktor framework
 [![Version](https://img.shields.io/badge/version-indev-green)]()
 [![Tests](https://github.com/SkoSC/ktor-incontrol/workflows/Tests/badge.svg)]()
 [![JitPack](https://jitpack.io/v/SkoSC/ktor-incontrol.svg)](https://jitpack.io/#SkoSC/ktor-incontrol)
