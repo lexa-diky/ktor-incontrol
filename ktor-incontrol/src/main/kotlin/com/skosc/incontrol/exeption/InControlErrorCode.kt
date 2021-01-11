@@ -10,7 +10,6 @@ enum class InControlErrorCode(val readable: String) {
     HANDLER_PARAMETER_CAST("Can't Cast Handler Parameter"),
 
     PARAMETER_CANT_FIND_PARAMETER("Can't Find Parameter For Handler"),
-    PARAMETER_CANT_RESOLVE_TYPE("Can't Resolve Type"),
     PARAMETER_UNSUPPORTED_TYPE("Unsupported Handler Parameter Type"),
 
     CONTROLLER_NOT_IMPLEMENTING("Routing Class Not Implementing Controller"),

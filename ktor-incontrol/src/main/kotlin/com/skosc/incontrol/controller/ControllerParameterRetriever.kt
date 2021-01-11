@@ -38,11 +38,22 @@ internal class ControllerParameterRetriever {
                     normalizeQueryOrPath(parameter, call.request.queryParameters[parameter.name])
                 ParameterType.PATH ->
                     normalizeQueryOrPath(parameter, extractPathParameter(call, parameter))
+                ParameterType.AUTO ->
+                    extractAutoParameter(call, diContainerWrapper, parameter)
                 ParameterType.DEPENDENCY ->
                     tryResolveDependencyParameter(diContainerWrapper, parameter)
-                else -> throwCantFindParameter(parameter)
             }
         }.filter { (_, v) -> v != optionalParameterValueMarker }
+    }
+
+    private fun extractAutoParameter(
+        call: ApplicationCall,
+        diContainerWrapper: DIContainerWrapper,
+        parameter: ControllerHandlerParameter,
+    ): Any {
+        return call.parameters[parameter.name]?.let { normalizeQueryOrPath(parameter, it) }
+            ?: resolveDependencyParameter(diContainerWrapper, parameter)
+            ?: throwCantFindParameter(parameter)
     }
 
     private fun extractPathParameter(call: ApplicationCall, parameter: ControllerHandlerParameter): String? {
@@ -55,13 +66,21 @@ internal class ControllerParameterRetriever {
         }
     }
 
+    private fun resolveDependencyParameter(
+        diContainerWrapper: DIContainerWrapper,
+        parameter: ControllerHandlerParameter,
+    ): Any? {
+        // If parameter name in code matches resolved parameter name, then tag is not set
+        val tag = if (parameter.kParameter.name == parameter.name) null else parameter.name
+        return diContainerWrapper.resolve(tag, parameter.kType)
+
+    }
+
     private fun tryResolveDependencyParameter(
         diContainerWrapper: DIContainerWrapper,
         parameter: ControllerHandlerParameter,
     ): Any {
-        // If parameter name in code matches resolved parameter name, then tag is not set
-        val tag = if (parameter.kParameter.name == parameter.name) null else parameter.name
-        return diContainerWrapper.resolve(tag, parameter.kType)
+        return resolveDependencyParameter(diContainerWrapper, parameter)
             ?: throwCantFindDependency(parameter, diContainerWrapper)
     }
 

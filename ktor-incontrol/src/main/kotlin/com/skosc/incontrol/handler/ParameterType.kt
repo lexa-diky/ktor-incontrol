@@ -25,6 +25,11 @@ internal enum class ParameterType {
     QUERY,
 
     /**
+     * Parameter thet will be tried to automatically resolved as most likely type (either PATH or QUERY)
+     */
+    AUTO,
+
+    /**
      * Parameter containing some system parameter not directly passed network
      */
     DEPENDENCY

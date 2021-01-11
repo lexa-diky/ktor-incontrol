@@ -38,7 +38,7 @@ internal class ParameterTypeResolver {
         checkIsPath(parameter) -> ParameterType.PATH
         checkIsQuery(parameter) -> ParameterType.QUERY
         checkIsDependency(parameter) -> ParameterType.DEPENDENCY
-        else -> throwCantResolveTypeParameter(parameter)
+        else -> ParameterType.AUTO
     }
 
     private fun checkIsBody(parameter: KParameter): Boolean {
@@ -81,12 +81,6 @@ internal class ParameterTypeResolver {
         return parameter.hasAnnotation<Dependency>() ||
                 buildInDependencyTypes.any { it.isSupertypeOf(parameter.type) }
     }
-
-    private fun throwCantResolveTypeParameter(parameter: KParameter): Nothing = inControlError(
-        code = InControlErrorCode.PARAMETER_CANT_RESOLVE_TYPE,
-        reason = "Can't resolve parameter type of $parameter",
-        howToSolve = "Add parameter type annotation: @Body, @Query, @Path, @Dependency"
-    )
 
     companion object {
 

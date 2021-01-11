@@ -21,6 +21,7 @@ internal class ParameterNameResolver {
             ParameterType.BODY -> requireNotNull(parameter.name)
             ParameterType.PATH -> resolveForPath(parameter)
             ParameterType.QUERY -> resolveForQuery(parameter)
+            ParameterType.AUTO -> resolveForAuto(parameter)
             ParameterType.DEPENDENCY -> resolveForDependency(parameter)
         }
     }
@@ -39,6 +40,10 @@ internal class ParameterNameResolver {
             return requireNotNull(parameter.name)
         }
         return annotation.name
+    }
+
+    private fun resolveForAuto(parameter: KParameter): String {
+        return requireNotNull(parameter.name)
     }
 
     private fun resolveForDependency(parameter: KParameter): String {
