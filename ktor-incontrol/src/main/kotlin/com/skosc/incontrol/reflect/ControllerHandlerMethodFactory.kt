@@ -4,12 +4,12 @@ import kotlin.reflect.KFunction
 import kotlin.reflect.full.valueParameters
 
 /**
- * @author a.yakovlev
- * @since indev
- *
  * Factory producing [ControllerHandlerMethod] from [KFunction]
  *
  * @param controllerHandlerParameterFactory - factory of parameters
+ *
+ * @author a.yakovlev
+ * @since indev
  */
 internal class ControllerHandlerMethodFactory(
     private val controllerHandlerParameterFactory: ControllerHandlerParameterFactory,
