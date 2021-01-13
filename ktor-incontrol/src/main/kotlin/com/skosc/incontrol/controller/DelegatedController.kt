@@ -3,10 +3,10 @@ package com.skosc.incontrol.controller
 import com.skosc.incontrol.InControl
 import com.skosc.incontrol.di.DIContainerWrapperAggregate
 import com.skosc.incontrol.di.DefaultAnonymousDITypeContainer
-import com.skosc.incontrol.reflect.ControllerHandlerMethod
-import com.skosc.incontrol.reflect.ControllerHandlerMethodFactory
-import com.skosc.incontrol.reflect.ControllerHandlerParameterFactory
-import com.skosc.incontrol.reflect.HandlerMethodFinder
+import com.skosc.incontrol.handler.ControllerHandlerMethod
+import com.skosc.incontrol.handler.ControllerHandlerMethodFactory
+import com.skosc.incontrol.handler.parameter.ControllerHandlerParameterFactory
+import com.skosc.incontrol.handler.HandlerMethodFinder
 import io.ktor.application.*
 import io.ktor.response.*
 

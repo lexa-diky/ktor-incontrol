@@ -1,7 +1,7 @@
-package com.skosc.incontrol.reflect
+package com.skosc.incontrol.handler.parameter
 
 import com.skosc.incontrol.controller.Controller
-import com.skosc.incontrol.handler.ParameterType
+import com.skosc.incontrol.handler.parameter.ParameterType
 import kotlin.reflect.KParameter
 import kotlin.reflect.KType
 

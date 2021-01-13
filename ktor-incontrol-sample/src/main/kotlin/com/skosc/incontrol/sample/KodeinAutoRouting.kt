@@ -42,7 +42,7 @@ fun main() {
         }
 
         routing {
-            autoRoute("com.skosc")
+            autoRoute()
         }
     }.start()
 }

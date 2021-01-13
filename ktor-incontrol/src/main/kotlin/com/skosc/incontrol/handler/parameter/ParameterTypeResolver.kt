@@ -1,4 +1,4 @@
-package com.skosc.incontrol.reflect
+package com.skosc.incontrol.handler.parameter
 
 import com.skosc.incontrol.annotation.Body
 import com.skosc.incontrol.annotation.Dependency
@@ -6,7 +6,7 @@ import com.skosc.incontrol.annotation.Path
 import com.skosc.incontrol.annotation.Query
 import com.skosc.incontrol.exeption.InControlErrorCode
 import com.skosc.incontrol.exeption.inControlError
-import com.skosc.incontrol.handler.ParameterType
+import com.skosc.incontrol.reflect.StaticTypes
 import io.ktor.application.*
 import kotlin.reflect.KParameter
 import kotlin.reflect.KType

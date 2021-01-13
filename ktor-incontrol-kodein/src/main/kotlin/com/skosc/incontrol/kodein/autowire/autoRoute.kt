@@ -1,9 +1,11 @@
 package com.skosc.incontrol.kodein.autowire
 
+import com.skosc.incontrol.InControl
 import com.skosc.incontrol.controller.Controller
 import com.skosc.incontrol.exeption.InControlErrorCode
 import com.skosc.incontrol.exeption.inControlError
 import com.skosc.incontrol.kodein.handle
+import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.routing.*
 import org.reflections.Reflections
@@ -20,8 +22,9 @@ import kotlin.reflect.full.isSubclassOf
  * @param group - filters witch [Controller]s will be placed into routing according to [AutoRouting.group] parameter
  */
 @Suppress("UNCHECKED_CAST")
-fun Route.autoRoute(pkg: String, group: String = AutoRouting.DEFAULT_GROUP) {
-    val reflections = Reflections(pkg)
+fun Route.autoRoute(pkg: String? = null, group: String = AutoRouting.DEFAULT_GROUP) {
+    val resolvedPackage = pkg ?: application.feature(InControl).runningEnvironment.mainPackage
+    val reflections = Reflections(resolvedPackage)
     // TODO Rewrite more efficiently
     val types = reflections.getTypesAnnotatedWith(AutoRouting::class.java)
         .filter { it.getDeclaredAnnotation(AutoRouting::class.java).group == group }

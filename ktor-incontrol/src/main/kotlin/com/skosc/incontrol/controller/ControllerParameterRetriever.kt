@@ -3,8 +3,8 @@ package com.skosc.incontrol.controller
 import com.skosc.incontrol.di.DIContainerWrapper
 import com.skosc.incontrol.exeption.InControlErrorCode
 import com.skosc.incontrol.exeption.inControlError
-import com.skosc.incontrol.handler.ParameterType
-import com.skosc.incontrol.reflect.ControllerHandlerParameter
+import com.skosc.incontrol.handler.parameter.ParameterType
+import com.skosc.incontrol.handler.parameter.ControllerHandlerParameter
 import com.skosc.incontrol.reflect.StaticTypes
 import io.ktor.application.*
 import io.ktor.request.*

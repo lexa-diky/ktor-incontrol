@@ -1,4 +1,4 @@
-package com.skosc.incontrol.handler
+package com.skosc.incontrol.handler.parameter
 
 import com.skosc.incontrol.annotation.Body
 

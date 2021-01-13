@@ -3,7 +3,8 @@ package com.skosc.incontrol.reflect
 import com.skosc.incontrol.annotation.Body
 import com.skosc.incontrol.annotation.Path
 import com.skosc.incontrol.annotation.Query
-import com.skosc.incontrol.handler.ParameterType
+import com.skosc.incontrol.handler.parameter.ParameterType
+import com.skosc.incontrol.handler.parameter.ParameterTypeResolver
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import kotlin.reflect.full.findParameterByName

@@ -2,6 +2,7 @@ package com.skosc.incontrol
 
 import com.skosc.incontrol.controller.ControllerParameterRetriever
 import com.skosc.incontrol.di.DIContainerWrapper
+import com.skosc.incontrol.reflect.RunningEnvironment
 import io.ktor.application.*
 import io.ktor.routing.*
 import io.ktor.util.*
@@ -19,6 +20,11 @@ class InControl(val application: Application) {
      * Container witch will retrieve handler method dependencies
      */
     var diContainer: DIContainerWrapper = DIContainerWrapper.empty()
+
+    /**
+     * Environment of current running instance of application
+     */
+    val runningEnvironment: RunningEnvironment = RunningEnvironment()
 
     /**
      * Modules that will be applied to feature, when [ensureInitialized] will be called first time

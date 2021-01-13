@@ -1,10 +1,9 @@
-package com.skosc.incontrol.reflect
+package com.skosc.incontrol.handler.parameter
 
 import com.skosc.incontrol.annotation.Dependency
 import com.skosc.incontrol.annotation.Path
 import com.skosc.incontrol.annotation.Query
 import com.skosc.incontrol.annotation.isResolveDefault
-import com.skosc.incontrol.handler.ParameterType
 import kotlin.reflect.KParameter
 import kotlin.reflect.full.findAnnotation
 
