@@ -21,10 +21,13 @@ internal class ControllerHandlerMethod(
 ) {
     private val instanceParameter: KParameter = kFunction.instanceParameter ?: throwMemberClassException()
 
-    suspend fun call(instance: Controller, parameters: Map<ControllerHandlerParameter, Any?>): Any? {
+    /**
+     * Invokes handler function of [controller] with [parameters]
+     */
+    suspend fun call(controller: Controller, parameters: Map<ControllerHandlerParameter, Any?>): Any? {
         return kFunction
             .also { it.isAccessible = true }
-            .callSuspendBy(parameters.mapKeys { it.key.kParameter } + (instanceParameter to instance))
+            .callSuspendBy(parameters.mapKeys { it.key.kParameter } + (instanceParameter to controller))
     }
 
     private fun throwMemberClassException(): Nothing = inControlError(
