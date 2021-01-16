@@ -10,14 +10,12 @@ class RunningEnvironment {
 
     val mainPackage: String? by lazy {
         val trace = Thread.currentThread().stackTrace
-        if (trace.isNotEmpty()) {
-            trace[trace.size - 1].className
-                .split(PACKAGE_SEPARATOR)
-                .dropLast(1)
-                .joinToString(separator = PACKAGE_SEPARATOR)
-        } else {
-            null
-        }
+        trace.takeIf { it.isNotEmpty() }
+            ?.last()
+            ?.className
+            ?.split(PACKAGE_SEPARATOR)
+            ?.dropLast(1)
+            ?.joinToString(separator = PACKAGE_SEPARATOR)
     }
 
     companion object {

@@ -1,6 +1,7 @@
 package com.skosc.incontrol.kodein
 
 import com.skosc.incontrol.InControl
+import com.skosc.incontrol.InControlConfiguration
 import org.kodein.di.ktor.di
 
 /**
@@ -9,8 +10,8 @@ import org.kodein.di.ktor.di
  *
  * Enables integration with kodein framework
  */
-fun InControl.enableKodeinIntegration() = registerModule {
-    diContainer = KodeinDIContainerWrapper(application.di())
+fun InControlConfiguration.enableKodeinIntegration() {
+        diContainer = KodeinDIContainerWrapper(application.di())
 }
 
 /**
@@ -19,6 +20,6 @@ fun InControl.enableKodeinIntegration() = registerModule {
  *
  * Enables auto routing feature
  */
-fun InControl.enableAutoRoutedControllers() = registerModule {
+fun InControlConfiguration.enableAutoRoutedControllers() {
 
 }

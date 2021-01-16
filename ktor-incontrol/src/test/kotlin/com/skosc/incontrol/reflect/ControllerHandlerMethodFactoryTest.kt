@@ -7,6 +7,8 @@ import com.skosc.incontrol.exeption.InControlErrorCode
 import com.skosc.incontrol.exeption.InControlException
 import com.skosc.incontrol.handler.ControllerHandlerMethodFactory
 import com.skosc.incontrol.handler.parameter.ControllerHandlerParameterFactory
+import com.skosc.incontrol.handler.parameter.adapter.StringPlainTypeAdapter
+import com.skosc.incontrol.handler.parameter.adapter.TypeAdapterRegistry
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -16,8 +18,12 @@ private suspend fun freeHandlerMethod(@Body body: String) = 2
 
 internal class ControllerHandlerMethodFactoryTest {
 
+    val typeAdapterRegistry = TypeAdapterRegistry().apply {
+        register(StringPlainTypeAdapter())
+    }
+
     val controllerHandlerMethodFactory = ControllerHandlerMethodFactory(
-        ControllerHandlerParameterFactory()
+        ControllerHandlerParameterFactory(typeAdapterRegistry)
     )
 
     @Test

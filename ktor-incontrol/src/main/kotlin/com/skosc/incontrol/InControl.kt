@@ -2,6 +2,10 @@ package com.skosc.incontrol
 
 import com.skosc.incontrol.controller.ControllerParameterRetriever
 import com.skosc.incontrol.di.DIContainerWrapper
+import com.skosc.incontrol.handler.ControllerHandlerMethodFactory
+import com.skosc.incontrol.handler.HandlerMethodFinder
+import com.skosc.incontrol.handler.parameter.ControllerHandlerParameterFactory
+import com.skosc.incontrol.handler.parameter.adapter.TypeAdapterRegistry
 import com.skosc.incontrol.reflect.RunningEnvironment
 import io.ktor.application.*
 import io.ktor.routing.*
@@ -14,53 +18,40 @@ import java.util.*
  * @author a.yakovlev
  * @since indev
  */
-class InControl(val application: Application) {
+class InControl(val application: Application, configuration: InControlConfiguration) {
 
     /**
      * Container witch will retrieve handler method dependencies
      */
-    var diContainer: DIContainerWrapper = DIContainerWrapper.empty()
+    var diContainer: DIContainerWrapper = configuration.diContainer
 
     /**
      * Environment of current running instance of application
      */
     val runningEnvironment: RunningEnvironment = RunningEnvironment()
 
-    /**
-     * Modules that will be applied to feature, when [ensureInitialized] will be called first time
-     */
-    private val modules: MutableList<InControlModule> = LinkedList()
+    internal val typeAdapterRegistry: TypeAdapterRegistry = configuration.typeAdapterRegistry
 
-    private var isInitialized: Boolean = false
+    internal val controllerHandlerParameterFactory = ControllerHandlerParameterFactory(typeAdapterRegistry)
 
-    internal val parameterRetriever: ControllerParameterRetriever = ControllerParameterRetriever()
+    internal val controllerHandlerMethodFactory: ControllerHandlerMethodFactory =
+        ControllerHandlerMethodFactory(controllerHandlerParameterFactory)
 
-    /**
-     * Adds module with lazy initialization
-     */
-    fun registerModule(module: InControlModule) {
-        modules.add(module)
-    }
+    internal val parameterRetriever: ControllerParameterRetriever =
+        ControllerParameterRetriever(configuration.typeAdapterRegistry)
 
-    private fun ensureInitialized() {
-        if (!isInitialized) {
-            modules.forEach { it.apply(this) }
-            modules.clear()
-            isInitialized = true
-        }
-    }
+    internal val handlerMethodFinder: HandlerMethodFinder = HandlerMethodFinder()
 
     /**
      * Feature for enabling [Controller] usage
      */
-    companion object Feature : ApplicationFeature<Application, InControl, InControl> {
+    companion object Feature : ApplicationFeature<Application, InControlConfiguration, InControl> {
 
         override val key: AttributeKey<InControl> = AttributeKey("InControl")
 
-        override fun install(pipeline: Application, configure: InControl.() -> Unit): InControl {
-            return InControl(pipeline).apply(configure).apply {
-                ensureInitialized()
-            }
+        override fun install(pipeline: Application, configure: InControlConfiguration.() -> Unit): InControl {
+            val configuration = InControlConfiguration(pipeline).apply(configure).build()
+            return InControl(pipeline, configuration)
         }
     }
 }

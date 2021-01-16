@@ -17,22 +17,20 @@ import io.ktor.response.*
  * @author a.yakovlev
  * @since indev
  */
-internal class DelegatedController(private val controller: Controller) {
+internal class DelegatedController(private val inControl: InControl, private val controller: Controller) {
 
-    private val controllerHandlerMethodFactory: ControllerHandlerMethodFactory =
-        ControllerHandlerMethodFactory(ControllerHandlerParameterFactory())
-    private val handlerMethodFinder: HandlerMethodFinder = HandlerMethodFinder()
-    private val delegatedHandler: ControllerHandlerMethod =
-        controllerHandlerMethodFactory.from(handlerMethodFinder.findHandlerMethod(controller))
+
+    private val delegatedHandler: ControllerHandlerMethod = inControl.controllerHandlerMethodFactory.from(
+        inControl.handlerMethodFinder.findHandlerMethod(controller)
+    )
 
     /**
      * Handles passed [call] with wrapped controller
      */
     suspend fun handle(call: ApplicationCall) {
-        val feature = call.application.feature(InControl)
 
-        val diContainer = buildLocalDiContainer(feature, call)
-        val parameters = feature.parameterRetriever.retrieveParameters(
+        val diContainer = buildLocalDiContainer(inControl, call)
+        val parameters = inControl.parameterRetriever.retrieveParameters(
             expectedParameters = delegatedHandler.parameters,
             diContainerWrapper = diContainer,
             call = call

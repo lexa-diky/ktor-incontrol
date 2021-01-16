@@ -6,7 +6,7 @@ import com.skosc.incontrol.annotation.Path
 import com.skosc.incontrol.annotation.Query
 import com.skosc.incontrol.exeption.InControlErrorCode
 import com.skosc.incontrol.exeption.inControlError
-import com.skosc.incontrol.reflect.StaticTypes
+import com.skosc.incontrol.handler.parameter.adapter.TypeAdapterRegistry
 import io.ktor.application.*
 import kotlin.reflect.KParameter
 import kotlin.reflect.KType
@@ -20,17 +20,10 @@ import kotlin.reflect.full.isSupertypeOf
  * @author a.yakovlev
  * @since indev
  */
-internal class ParameterTypeResolver {
+internal class ParameterTypeResolver(private val typeAdapterRegistry: TypeAdapterRegistry) {
 
     private val buildInDependencyTypes: List<KType> = listOf(
         ApplicationCall::class.createType()
-    )
-
-    private val pathAndQueryTypes: List<KType> = listOf(
-        StaticTypes.STRING,
-        StaticTypes.DOUBLE,
-        StaticTypes.INT,
-        StaticTypes.BOOLEAN
     )
 
     fun resolve(parameter: KParameter): ParameterType = when {
@@ -47,13 +40,13 @@ internal class ParameterTypeResolver {
 
     private fun checkIsPath(parameter: KParameter): Boolean {
         return if (parameter.hasAnnotation<Path>()) {
-            if (pathAndQueryTypes.any { it.isSupertypeOf(parameter.type) }) {
+            if (typeAdapterRegistry.contains(parameter.type)) {
                 true
             } else {
                 inControlError(
                     code = InControlErrorCode.PARAMETER_UNSUPPORTED_TYPE,
                     reason = "Unsupported type: ${parameter.type} for parameter: ${parameter.name}",
-                    howToSolve = "Change parameter type to one of: $pathAndQueryTypes"
+                    howToSolve = "Add type adapter for ${parameter.type}"
                 )
             }
         } else {
@@ -63,13 +56,13 @@ internal class ParameterTypeResolver {
 
     private fun checkIsQuery(parameter: KParameter): Boolean {
         return if (parameter.hasAnnotation<Query>()) {
-            if (pathAndQueryTypes.any { it.isSupertypeOf(parameter.type) }) {
+            if (typeAdapterRegistry.contains(parameter.type)) {
                 true
             } else {
                 inControlError(
                     code = InControlErrorCode.PARAMETER_UNSUPPORTED_TYPE,
                     reason = "Unsupported type: ${parameter.type} for parameter: ${parameter.name}",
-                    howToSolve = "Change parameter type to one of: $pathAndQueryTypes"
+                    howToSolve = "Add type adapter for ${parameter.type}"
                 )
             }
         } else {
@@ -83,8 +76,6 @@ internal class ParameterTypeResolver {
     }
 
     companion object {
-
-        val DEFAULT = ParameterTypeResolver()
 
         private const val NAME_BODY = "body"
     }

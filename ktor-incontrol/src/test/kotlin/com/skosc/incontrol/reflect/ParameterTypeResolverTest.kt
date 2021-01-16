@@ -5,34 +5,40 @@ import com.skosc.incontrol.annotation.Path
 import com.skosc.incontrol.annotation.Query
 import com.skosc.incontrol.handler.parameter.ParameterType
 import com.skosc.incontrol.handler.parameter.ParameterTypeResolver
+import com.skosc.incontrol.handler.parameter.adapter.StringPlainTypeAdapter
+import com.skosc.incontrol.handler.parameter.adapter.TypeAdapterRegistry
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import kotlin.reflect.full.findParameterByName
 
 internal class ParameterTypeResolverTest {
 
+    val typeAdapterRegistry = TypeAdapterRegistry().apply {
+        register(StringPlainTypeAdapter())
+    }
+
     @Test
     fun `resolves body type by name`() {
         val bodyParameter = TestingSample::handlerOfBody.findParameterByName("body")!!
-        assertEquals(ParameterType.BODY, ParameterTypeResolver().resolve(bodyParameter))
+        assertEquals(ParameterType.BODY, ParameterTypeResolver(typeAdapterRegistry).resolve(bodyParameter))
     }
 
     @Test
     fun `resolves body type by annotation`() {
         val bodyParameter = TestingSample::handlerOfBodyWithAnnotation.findParameterByName("param")!!
-        assertEquals(ParameterType.BODY, ParameterTypeResolver().resolve(bodyParameter))
+        assertEquals(ParameterType.BODY, ParameterTypeResolver(typeAdapterRegistry).resolve(bodyParameter))
     }
 
     @Test
     fun `resolves path type by annotation`() {
         val bodyParameter = TestingSample::handlerOfPath.findParameterByName("path")!!
-        assertEquals(ParameterType.PATH, ParameterTypeResolver().resolve(bodyParameter))
+        assertEquals(ParameterType.PATH, ParameterTypeResolver(typeAdapterRegistry).resolve(bodyParameter))
     }
 
     @Test
     fun `resolves query type by annotation`() {
         val bodyParameter = TestingSample::handlerOfQuery.findParameterByName("query")!!
-        assertEquals(ParameterType.QUERY, ParameterTypeResolver().resolve(bodyParameter))
+        assertEquals(ParameterType.QUERY, ParameterTypeResolver(typeAdapterRegistry).resolve(bodyParameter))
     }
 
     internal class TestingSample {

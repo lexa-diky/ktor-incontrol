@@ -5,7 +5,7 @@ import com.skosc.incontrol.exeption.InControlErrorCode
 import com.skosc.incontrol.exeption.inControlError
 import com.skosc.incontrol.handler.parameter.ParameterType
 import com.skosc.incontrol.handler.parameter.ControllerHandlerParameter
-import com.skosc.incontrol.reflect.StaticTypes
+import com.skosc.incontrol.handler.parameter.adapter.TypeAdapterRegistry
 import io.ktor.application.*
 import io.ktor.request.*
 import kotlin.reflect.full.isSubtypeOf
@@ -16,7 +16,7 @@ import kotlin.reflect.full.isSubtypeOf
  * @author a.yakovlev
  * @since indev
  */
-internal class ControllerParameterRetriever {
+internal class ControllerParameterRetriever(private val typeAdapterRegistry: TypeAdapterRegistry) {
 
     private val optionalParameterValueMarker = object {}
 
@@ -95,17 +95,7 @@ internal class ControllerParameterRetriever {
 
     private fun castQueryOrPathToNearestType(parameter: ControllerHandlerParameter, value: String): Any {
         try {
-            return when {
-                parameter.kType.isSubtypeOf(StaticTypes.STRING) -> value
-                parameter.kType.isSubtypeOf(StaticTypes.INT) -> value.toInt()
-                parameter.kType.isSubtypeOf(StaticTypes.DOUBLE) -> value.toDouble()
-                parameter.kType.isSubtypeOf(StaticTypes.BOOLEAN) -> value.toBoolean()
-                else -> inControlError(
-                    code = InControlErrorCode.OTHER_INTEGRITY,
-                    reason = "Integrity error",
-                    howToSolve = "Please make Github issue"
-                )
-            }
+            return typeAdapterRegistry.resolveTryResolve(parameter.kType).convert(value)
         } catch (e: Exception) {
             inControlError(
                 cause = e,

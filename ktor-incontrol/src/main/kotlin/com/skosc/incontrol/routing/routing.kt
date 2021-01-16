@@ -1,5 +1,6 @@
 package com.skosc.incontrol.routing
 
+import com.skosc.incontrol.InControl
 import com.skosc.incontrol.controller.Controller
 import com.skosc.incontrol.controller.DelegatedController
 import io.ktor.application.*
@@ -61,7 +62,8 @@ fun Route.patch(controller: Controller): Route = handle(controller, HttpMethod.P
  */
 @ContextDsl
 fun Route.handle(controller: Controller, method: HttpMethod): Route {
-    val delegate = DelegatedController(controller)
+    val feature = application.feature(InControl)
+    val delegate = DelegatedController(feature, controller)
     return route(controller.route, method) {
         handle { delegate.handle(call) }
     }
