@@ -172,13 +172,12 @@ routing {
 ✔️Out Of Box Integration With Kodein  
 ❌   Stable Architecture  
 ❌   High Performance    
-❌   Readable Error Coverage    
 ❌   Test Coverage  
 ❌   Documentation  
 
 ## Future
 
-🚀   Custom Parameter Adapters  
 🚀   Ability To 'Hack' Library Internals  
+🚀   Extensive Feature Configuration
 
 [Kodein Docs]: https://docs.kodein.org/kodein-di/7.2/framework/ktor.html

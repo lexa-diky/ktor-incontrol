@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'com.skosc.incontrol'
-version = 'indev'
+version = project.property("com.skosc.incontrol.version")
 
 repositories {
     mavenCentral()

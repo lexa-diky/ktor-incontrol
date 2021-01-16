@@ -5,6 +5,9 @@ import kotlin.reflect.KType
 import kotlin.reflect.full.createType
 import kotlin.reflect.full.isSupertypeOf
 
+/**
+ * Simple implementation of di container matching types to instance.
+ */
 internal class DefaultAnonymousDITypeContainer(
     private val dependencies: List<Pair<KType, Any>>,
 ) : DIContainerWrapper {
