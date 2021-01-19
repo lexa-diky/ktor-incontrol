@@ -37,14 +37,6 @@ internal class HandlerMethodFinderTest {
         assertEquals(InControlErrorCode.HANDLER_TOO_MANY_MATCHING, exception.errorCode)
     }
 
-    @Test
-    fun `handler method should be marked as suspend`() {
-        val exception = assertThrows<InControlException> {
-            finder.findHandlerMethod(FailControllerWithPublicMethodWithoutSuspend())
-        }
-        assertEquals(InControlErrorCode.HANDLER_NOT_FOUND, exception.errorCode)
-    }
-
     internal class OkController : Controller {
 
         override val route: String = "/"

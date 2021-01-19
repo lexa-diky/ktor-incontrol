@@ -7,6 +7,7 @@ import com.skosc.incontrol.exeption.InControlErrorCode
 import com.skosc.incontrol.exeption.InControlException
 import com.skosc.incontrol.handler.ControllerHandlerMethodFactory
 import com.skosc.incontrol.handler.parameter.ControllerHandlerParameterFactory
+import com.skosc.incontrol.handler.parameter.adapter.HashMapTypeAdapterRegistry
 import com.skosc.incontrol.handler.parameter.adapter.StringPlainTypeAdapter
 import com.skosc.incontrol.handler.parameter.adapter.TypeAdapterRegistry
 import kotlinx.coroutines.runBlocking
@@ -18,7 +19,7 @@ private suspend fun freeHandlerMethod(@Body body: String) = 2
 
 internal class ControllerHandlerMethodFactoryTest {
 
-    val typeAdapterRegistry = TypeAdapterRegistry().apply {
+    val typeAdapterRegistry = HashMapTypeAdapterRegistry().apply {
         register(StringPlainTypeAdapter())
     }
 

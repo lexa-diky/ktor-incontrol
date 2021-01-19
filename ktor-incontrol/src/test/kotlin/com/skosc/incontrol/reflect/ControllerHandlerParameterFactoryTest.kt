@@ -3,6 +3,7 @@ package com.skosc.incontrol.reflect
 import com.skosc.incontrol.annotation.Body
 import com.skosc.incontrol.handler.parameter.ControllerHandlerParameterFactory
 import com.skosc.incontrol.handler.parameter.ParameterType
+import com.skosc.incontrol.handler.parameter.adapter.HashMapTypeAdapterRegistry
 import com.skosc.incontrol.handler.parameter.adapter.StringPlainTypeAdapter
 import com.skosc.incontrol.handler.parameter.adapter.TypeAdapterRegistry
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -11,7 +12,7 @@ import kotlin.reflect.full.declaredMemberFunctions
 
 internal class ControllerHandlerParameterFactoryTest {
 
-    val typeAdapterRegistry = TypeAdapterRegistry().apply {
+    val typeAdapterRegistry = HashMapTypeAdapterRegistry().apply {
         register(StringPlainTypeAdapter())
     }
 
