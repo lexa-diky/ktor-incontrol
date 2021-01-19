@@ -12,7 +12,7 @@ class InControlConfiguration(val application: Application) {
 
     var diContainer: DIContainerWrapper = DIContainerWrapper.empty()
 
-    internal val typeAdapterRegistry: TypeAdapterRegistry = TypeAdapterRegistry()
+    internal val typeAdapterRegistry: MutableTypeAdapterRegistry = HashMapTypeAdapterRegistry()
 
     private var isBuild: Boolean = false
 

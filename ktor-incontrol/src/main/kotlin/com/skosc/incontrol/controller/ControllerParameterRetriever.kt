@@ -95,13 +95,14 @@ internal class ControllerParameterRetriever(private val typeAdapterRegistry: Typ
 
     private fun castQueryOrPathToNearestType(parameter: ControllerHandlerParameter, value: String): Any {
         try {
-            return typeAdapterRegistry.resolveTryResolve(parameter.kType).convert(value)
+            return typeAdapterRegistry.resolve(parameter.kType)?.convert(value)
+                ?: error("Can't find handler for type: ${parameter.kType}")
         } catch (e: Exception) {
             inControlError(
                 cause = e,
                 code = InControlErrorCode.HANDLER_PARAMETER_CAST,
                 reason = "Can't cast handler parameter $parameter",
-                howToSolve = "Please check type annotations"
+                howToSolve = "Please check type annotations or register adapter"
             )
         }
     }
