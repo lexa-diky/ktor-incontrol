@@ -15,7 +15,7 @@ fun main() {
         install(InControl)
         routing {
             get(object : Controller {
-                suspend fun handle(name: String = "World") = "Hello $name"
+                fun handle() = "Hello"
             })
         }
     }.start()

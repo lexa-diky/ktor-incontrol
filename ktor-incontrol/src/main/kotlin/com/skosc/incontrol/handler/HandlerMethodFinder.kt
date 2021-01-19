@@ -16,16 +16,14 @@ import kotlin.reflect.full.declaredMemberFunctions
 internal class HandlerMethodFinder {
 
     /**
-     * Finds method that can act as handler according to following criteria:
-     *   1. method is public
-     *   2. methods is suspend
+     * Finds method that can act as handler
      *
      * @throws IllegalStateException if passed [instance] contains more then one matching method
      */
     fun findHandlerMethod(instance: Controller): KFunction<*> {
         val controllerClass = instance::class
         val matchingMethods = controllerClass.declaredMemberFunctions
-            .filter { fn -> fn.isPublic && fn.isSuspend }
+            .filter { fn -> fn.isPublic }
         return when (matchingMethods.size) {
             0 -> throwHandlerNotFoundError(instance)
             1 -> matchingMethods.first()

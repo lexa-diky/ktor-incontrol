@@ -43,7 +43,7 @@ class MyController : Controller {
     
     override val route = "/{user}"
     
-    // handler function is required to be public and suspended
+    // handler function is required to be only public function in class
     suspend fun handle(@Path user: String) = "Hello $user"
 }
 ```
