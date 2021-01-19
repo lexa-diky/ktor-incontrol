@@ -74,6 +74,31 @@ and/or nullable but support only Int, Double, Boolean and String parameters.
 
 ## Advanced Features
 
+### Type Adapters
+You can add type adapters for a custom path and query parameter types
+
+First, create your adapter class.
+```kotlin
+class UUIDTypeAdapter : PlainTypeAdapter<UUID> {
+    
+    override val type: KType = UUID::class.createType()
+
+    override fun convert(value: String): UUID = UUID.fromString(value)
+}
+```
+Then register it in feature builder
+```kotlin
+install(InControl) {
+    registerTypeAdapters(
+        listOf(UUIDTypeAdapter())
+    )
+}
+```
+After that, you can use adapted type in handler functions.
+```kotlin
+suspend fun handle(uuid: UUID) = "Hello, $uuid, with leastSignificantBits = ${uuid.leastSignificantBits}"
+```
+
 ### DI Container Integration
 
 You can inject any object into handler method. To do this, implement DIContainerWrapper interface and set it in your
